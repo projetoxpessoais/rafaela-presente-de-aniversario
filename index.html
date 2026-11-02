@@ -8,9 +8,11 @@
 
 <div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Entrar no quartinho</button><p>Toque nas caixinhas para abrir cada surpresa! ✨</p></div></div>
 <div id="modal" class="overlay hide"><div class="panel"><h2 id="heading">🎀 Presente</h2><div id="letter" class="letter"></div><button id="close">Continuar explorando ♡</button></div></div>
-</main><script src="rafaela-sprite.js?v=7"></script><script>
+</main><script src="rafaela-sprite.js?v=7"></script><script src="rafaela-3d-image.js?v=8"></script><script>
 (()=>{
 const canvas=document.getElementById("scene"),ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=false;
+const rafaela3d=new Image();
+rafaela3d.src=window.RAFAELA_3D_SRC||"";
 const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[160,385],[525,386]];
 const wishes=[
 "Que os seus 18 anos venham com descobertas felizes, momentos leves e muitas risadas! 🌸",
@@ -117,7 +119,21 @@ function corridor(p,t){
 }
 function character(x,y,back=false,walking=false,t=0,pose=""){window.drawRafaelaSprite(ctx,x,y,back,walking,t,pose)}
 function backAvatar(x,y,t,pose="",walking=false){character(x,y,true,walking,t,pose)}
-function avatar(){window.drawRafaelaSprite(ctx,position.x,position.y,false)}
+function avatar(){
+ if(rafaela3d.complete&&rafaela3d.naturalWidth){
+  ctx.save();
+  ctx.fillStyle="rgba(71,42,77,.2)";
+  ctx.beginPath();
+  ctx.ellipse(position.x,position.y-3,43,10,0,0,Math.PI*2);
+  ctx.fill();
+  ctx.imageSmoothingEnabled=true;
+  const height=248,width=116;
+  ctx.drawImage(rafaela3d,Math.round(position.x-width/2),Math.round(position.y-height),width,height);
+  ctx.restore();
+ }else{
+  window.drawRafaelaSprite(ctx,position.x,position.y,false);
+ }
+}
 function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
 function tone(hz,seconds=.2){if(!sound)return;try{ac??=new AudioContext();if(ac.state==="suspended")ac.resume();const o=ac.createOscillator(),v=ac.createGain();o.type="sine";o.frequency.value=hz;v.gain.setValueAtTime(.025,ac.currentTime);v.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+seconds);o.connect(v).connect(ac.destination);o.start();o.stop(ac.currentTime+seconds)}catch{}}
 function refresh(){$("count").textContent="🎁 "+Array.from(opened).filter(i=>i<9).length+"/9";}
@@ -135,7 +151,7 @@ function showGift(i){
  tone(659,.2);
 }
 function play(){
- mode="play";position={x:315,y:360};
+ mode="play";position={x:320,y:387};
  $("start").classList.add("hide");$("hud").classList.remove("hide");refresh();
 }
 function chooseGift(event){
@@ -157,7 +173,7 @@ function frame(t){
   const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0];
   const note=melody[step++%melody.length];if(note)tone(note,.3);nextNote=t+490;
  }
- word("v7 • presentes clicáveis",516,470,11,"#60436f");
+ word("v8 • Rafaela 3D",551,470,11,"#60436f");
  requestAnimationFrame(frame);
 }
 $("begin").onclick=()=>{sound=true;$("sound").textContent="🔊 Som";tone(523,.1);play()};
