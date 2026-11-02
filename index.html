@@ -8,7 +8,7 @@
 <button id="skip" class="hide">Pular introdução »</button>
 <div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Começar surpresa</button><p>Use as setas, WASD ou os botões na tela.</p></div></div>
 <div id="modal" class="overlay hide"><div class="panel"><h2 id="heading">🎀 Presente</h2><div id="letter" class="letter"></div><button id="close">Continuar explorando ♡</button></div></div>
-</main><script src="rafaela-sprite.js?v=5"></script><script>
+</main><script src="rafaela-sprite.js?v=6"></script><script>
 (()=>{
 const canvas=document.getElementById("scene"),ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=false;
 const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[305,352],[320,205]];
@@ -24,7 +24,9 @@ const wishes=[
 "Mini missão: escolha uma qualidade sua e comemore! ⭐",
 "Surpresa, Rafaela! 💌\n\nFeliz aniversário de 18 anos! Este quartinho foi feito para deixar seu dia mais divertido.\n\n[A assinatura e a mensagem final ainda serão personalizadas.]"
 ];
-let opened=new Set(),mode="start",position={x:320,y:432},keys=new Set(),near=-1,begin=0,sound=false,ac=null,step=0,nextNote=0,last=0;
+let opened=new Set(),mode="start",position={x:320,y:445},keys=new Set(),near=-1,begin=0,sound=false,ac=null,step=0,nextNote=0,last=0;
+let giftFx=null,moving=false,walkClock=0,doorClickPlayed=false;
+const INTRO_MS=6700;
 try{opened=new Set(JSON.parse(localStorage.getItem("rafaela-gifts-v1")||"[]"))}catch{}
 const save=()=>localStorage.setItem("rafaela-gifts-v1",JSON.stringify([...opened]));
 const rect=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)};
@@ -43,7 +45,35 @@ rect(289,410,62,70,"#8b6495");rect(294,415,52,65,"#c8a5d4");
 rect(279,470,82,10,"#fff1fa");word("ENTRADA",320,405,11,"#66466d");
 for(let x=28;x<640;x+=59){rect(x,14+Math.sin(t/700+x)*3,6,6,"#fff0b4")}
 }
-function gift(x,y,i,t){const done=opened.has(i),locked=i===9&&!unlock(),w=done?0:Math.sin(t/350+i)*2;y+=w;rect(x-17,y-12,34,30,["#ff93c4","#c0a7ee","#9adcc8","#f6c68e"][i%4]);rect(x-4,y-12,8,30,"#fff3b9");rect(x-17,y-3,34,6,"#fff3b9");rect(x-20,y-17,40,8,"#ffecf7");rect(x-12,y-26,11,9,"#fff3b9");rect(x+1,y-26,11,9,"#fff3b9");word(String(i+1),x,y+33,13,"#543657");if(locked)word("🔒",x,y+6,19);if(done)word("✓",x+21,y-20,18,"#fff9ad")}
+function gift(x,y,i,t){
+ const done=opened.has(i),locked=i===9&&!unlock();
+ const fx=giftFx&&giftFx.i===i?Math.max(0,Math.min(1,(t-giftFx.start)/1550)):-1;
+ const lid=fx>=0?Math.max(0,Math.min(1,(fx-.25)/.46)):done?1:0;
+ const wobble=fx>=0&&fx<.34?Math.sin(fx*83)*5*(1-fx):0;
+ const bob=fx>=0?0:done?0:Math.sin(t/350+i)*2;
+ const color=["#ff93c4","#c0a7ee","#9adcc8","#f6c68e"][i%4];
+ ctx.save();ctx.translate(Math.round(x+wobble),Math.round(y+bob));
+ // Base e fitas da caixinha.
+ rect(-19,-11,38,29,"#9a658f");rect(-17,-13,34,29,color);
+ rect(-4,-13,8,29,"#fff3b9");rect(-17,-4,34,6,"#fff3b9");
+ if(lid>0){rect(-14,-13,28,5,"#5a3b67");rect(-10,-11,20,3,"#795175")}
+ // Tampa separada que levanta e se inclina conforme a abertura.
+ ctx.save();ctx.translate(-lid*10,-lid*28);ctx.rotate(-lid*.18);
+ rect(-20,-18,40,8,"#ffecf7");rect(-12,-27,11,9,"#fff3b9");rect(1,-27,11,9,"#fff3b9");
+ ctx.restore();
+ if(fx>.46){
+  const burst=(fx-.46)/.54;
+  for(let k=0;k<9;k++){
+    const a=k*2*Math.PI/9+t/700,dist=12+burst*43;
+    rect(Math.cos(a)*dist,Math.sin(a)*dist-17,4,4,k%2?"#fff4ab":"#fff8f8");
+  }
+  if(fx>.77)word("✨",0,-60,21,"#fff7c2");
+ }
+ if(done)word("✓",22,-29,18,"#fff9ad");
+ if(locked)word("🔒",0,6,19);
+ word(String(i+1),0,34,13,"#543657");
+ ctx.restore();
+}
 function corridor(p,t){
   // Hall de uma casa comum: porta proporcional à personagem.
   rect(0,0,640,480,"#e9e1d5");
@@ -65,7 +95,7 @@ function corridor(p,t){
   rect(278,174,84,130,"#b59e8c");
   rect(284,180,72,119,"#fefbf1");
   rect(289,185,62,111,"#725c69");
-  const raw=Math.max(0,Math.min(1,(p-.62)/.18));
+  const raw=Math.max(0,Math.min(1,(p-.58)/.19));
   const opening=raw*raw*(3-2*raw);
   if(opening>0){
     rect(290,185,61,110,"#d99fcc");
@@ -78,25 +108,100 @@ function corridor(p,t){
   rect(290,185,doorW,110,"#b58e77");
   rect(294,190,Math.max(0,doorW-8),99,"#dac1a8");
   if(opening<.8){
-    rect(290+doorW-13,236,5,6,"#e8cc8f");
-    rect(290+doorW-15,242,9,2,"#9d7b68");
+    rect(290+doorW-13,263,5,6,"#e8cc8f");
+    rect(290+doorW-15,269,9,2,"#9d7b68");
   }
   // Pequeno tapete: pista visual da altura real da porta.
   rect(263,308,114,12,"#b0a28e");rect(273,311,94,5,"#d4c6ae");
-  word(p<.6?"Um corredor bem comum...":p<.77?"A porta está abrindo...":"Tem algo especial lá dentro!",320,47,17,"#725d66");
+  word(p<.43?"Um corredor bem comum...":p<.58?"Será que esta porta abre?":p<.78?"Clic... a porta se abriu!":"Uma surpresa espera lá dentro ♡",320,47,17,"#725d66");
 }
-function character(x,y,back=false,walking=false,t=0){window.drawRafaelaSprite(ctx,x,y,back,walking,t)}
-function backAvatar(x,y,t){character(x,y,true,(t-begin)/5600<.62,t)}
-function avatar(){character(position.x,position.y,false,false,0)}
+function character(x,y,back=false,walking=false,t=0,pose=""){window.drawRafaelaSprite(ctx,x,y,back,walking,t,pose)}
+function backAvatar(x,y,t,pose="",walking=false){character(x,y,true,walking,t,pose)}
+function avatar(){character(position.x,position.y,false,moving,walkClock)}
 function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
 function tone(hz,seconds=.2){if(!sound)return;try{ac??=new AudioContext();if(ac.state==="suspended")ac.resume();const o=ac.createOscillator(),v=ac.createGain();o.type="sine";o.frequency.value=hz;v.gain.setValueAtTime(.025,ac.currentTime);v.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+seconds);o.connect(v).connect(ac.destination);o.start();o.stop(ac.currentTime+seconds)}catch{}}
 function refresh(){$("count").textContent="🎁 "+Array.from(opened).filter(i=>i<9).length+"/9";}
-function openGift(){if(mode!=="play"||near<0)return;if(near===9&&!unlock()){tone(210);return}opened.add(near);save();refresh();keys.clear();mode="modal";$("heading").textContent=near===9?"💌 Última surpresa":"🎀 Presente "+(near+1);$("letter").textContent=wishes[near];$("modal").classList.remove("hide");tone(523);setTimeout(()=>tone(659),130)}
-function startIntro(){mode="intro";begin=performance.now();$("start").classList.add("hide");$("skip").classList.remove("hide")}
-function play(){mode="play";position={x:320,y:452};$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
-function frame(t){const dt=Math.min((t-last)/1000||.016,.05);last=t;if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}if(mode==="intro"){const p=(t-begin)/5600;if(p<.85){corridor(p,t);position.x=320;if(p<.62){position.y=449-Math.min(p/.62,1)*114;backAvatar(position.x,position.y,t)}else if(p<.79){position.y=335;backAvatar(position.x,position.y,t);if(p<.68)word("clic!",320,157,14,"#695366")}else{position.y=335-Math.min((p-.79)/.06,1)*26;backAvatar(position.x,position.y,t)}}else{room(t);gifts.forEach((v,i)=>gift(...v,i,t));position.x=320;position.y=452;const alpha=Math.max(0,Math.min(1,(1-p)/.15));ctx.fillStyle="rgba(255,241,250,"+alpha*.5+")";ctx.fillRect(0,0,640,480)} if(p>=1)play()}else if(mode==="play"){let dx=Number(keys.has("right"))-Number(keys.has("left")),dy=Number(keys.has("down"))-Number(keys.has("up"));const d=Math.hypot(dx,dy)||1;position.x=Math.max(30,Math.min(605,position.x+dx/d*145*dt));position.y=Math.max(96,Math.min(445,position.y+dy/d*145*dt));near=-1;let closest=62;gifts.forEach(([x,y],i)=>{let dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});$("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";$("action").disabled=near<0; if(sound&&t>nextNote){const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];if(n)tone(n,.3);nextNote=t+490}}
-if(mode==="play" || mode==="intro"&&(t-begin)/5600>=.85){avatar()}word("v5 • sprite novo",564,470,11,"#60436f");requestAnimationFrame(frame)}
-$("begin").onclick=startIntro;$("replay").onclick=()=>{keys.clear();$("controls").classList.add("hide");$("hud").classList.add("hide");startIntro()};$("skip").onclick=play;$("action").onclick=openGift;$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
+function openGift(){
+ if(mode!=="play"||near<0)return;
+ if(near===9&&!unlock()){tone(210);return}
+ giftFx={i:near,start:performance.now()};
+ moving=false;keys.clear();mode="gift-opening";
+ $("action").disabled=true;
+ tone(493,.13);
+}
+function showGift(i){
+ const wasOpened=opened.has(i);
+ opened.add(i);save();refresh();
+ giftFx=null;mode="modal";
+ $("heading").textContent=i===9?"💌 Última surpresa":"🎀 Presente "+(i+1);
+ $("letter").textContent=wishes[i];
+ $("modal").classList.remove("hide");
+ tone(659,.22);
+ if(!wasOpened)tone(784,.18);
+}
+function startIntro(){mode="intro";begin=performance.now();doorClickPlayed=false;moving=false;giftFx=null;$("start").classList.add("hide");$("skip").classList.remove("hide")}
+function play(){mode="play";position={x:320,y:445};moving=false;$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
+function frame(t){
+ const dt=Math.min((t-last)/1000||.016,.05);last=t;
+ if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}
+ if(mode==="intro"){
+   const p=Math.max(0,(t-begin)/INTRO_MS);
+   if(p<.86){
+     corridor(p,t);
+     position.x=320;
+     if(p<.43){
+       // Caminhada com alternância de pernas, até parar diante da maçaneta.
+       position.y=432-102*(p/.43);
+       backAvatar(position.x,position.y,t,"",true);
+     }else if(p<.58){
+       position.y=330;
+       backAvatar(position.x,position.y,t,p<.49?"reach":"turn",false);
+       if(p>.49&&!doorClickPlayed){tone(440,.07);doorClickPlayed=true}
+     }else if(p<.77){
+       position.y=330;
+       backAvatar(position.x,position.y,t,"reach",false);
+     }else{
+       const q=Math.max(0,Math.min(1,(p-.77)/.09));
+       position.y=330-35*q;
+       ctx.save();ctx.beginPath();ctx.rect(283,176,75,161-37*q);ctx.clip();
+       backAvatar(position.x,position.y,t,"",true);ctx.restore();
+     }
+   }else{
+     room(t);gifts.forEach((v,i)=>gift(...v,i,t));
+     position.x=320;position.y=445;
+     const alpha=Math.max(0,Math.min(1,(1-p)/.14));
+     ctx.fillStyle="rgba(255,241,250,"+(alpha*.55)+")";
+     ctx.fillRect(0,0,640,480);
+     avatar();
+   }
+   if(p>=1)play();
+ }else if(mode==="play"){
+   let dx=Number(keys.has("right"))-Number(keys.has("left"));
+   let dy=Number(keys.has("down"))-Number(keys.has("up"));
+   const len=Math.hypot(dx,dy);
+   moving=len>0;
+   if(moving){
+     walkClock+=dt*1000;
+     position.x=Math.max(30,Math.min(605,position.x+dx/len*115*dt));
+     position.y=Math.max(110,Math.min(445,position.y+dy/len*115*dt));
+   }
+   near=-1;let closest=65;
+   gifts.forEach(([x,y],i)=>{const dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});
+   $("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";
+   $("action").disabled=near<0||near===9&&!unlock();
+ }else if(mode==="gift-opening"){
+   moving=false;
+   if(giftFx&&t-giftFx.start>1550)showGift(giftFx.i);
+ }
+ if(sound&&mode!=="start"&&t>nextNote){
+   const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];
+   if(n)tone(n,.3);nextNote=t+490;
+ }
+ if(mode==="play"||mode==="gift-opening"||mode==="modal"){avatar()}
+ word("v6 • animações",563,470,11,"#60436f");
+ requestAnimationFrame(frame);
+}
+$("begin").onclick=()=>{sound=true;$("sound").textContent="🔊 Som";tone(523,.12);startIntro()};$("replay").onclick=()=>{keys.clear();$("controls").classList.add("hide");$("hud").classList.add("hide");startIntro()};$("skip").onclick=play;$("action").onclick=openGift;$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
 $("sound").onclick=()=>{sound=!sound;$("sound").textContent=sound?"🔊 Som":"🔇 Som";if(sound)tone(523)};
 const map={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
 document.addEventListener("keydown",e=>{const k=map[e.key];if(k){e.preventDefault();keys.add(k)}if(e.key==="e"||e.key==="Enter")openGift()});
