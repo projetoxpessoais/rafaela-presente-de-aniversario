@@ -166,11 +166,24 @@
   $("restartTyping").addEventListener("click", startWriting);
   $("sound").addEventListener("click", () => music(!musicOn));
   $("reset").addEventListener("click", () => {
-    if (!confirm("Quer fechar o presente e recomeçar a surpresa?")) return;
-    close();
+    // Recomeça imediatamente, sem caixa de confirmação que possa ser bloqueada no celular.
+    stopWriting();
+    clearTimeout(openingTimer);
+    openingTimer = null;
+    writingPaused = true;
+    busy = false;
+    gift.classList.remove("opening");
+    modal.hidden = true;
+
+    // A surpresa deve recomeçar com o presente fechado.
     read = false;
     try { localStorage.removeItem(key); } catch {}
     render();
+
+    // Ao voltar ao início, a música para e a tela de boas-vindas reaparece.
+    music(false);
+    welcome.hidden = false;
+    $("start").focus();
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && !modal.hidden) close();
