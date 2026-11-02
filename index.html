@@ -1,191 +1,56 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Uma surpresinha para Rafaela 🎀</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#251d37;color:#fff4fb;font:16px monospace;min-height:100dvh;display:grid;place-items:center}main{position:relative;width:min(100vw,900px);aspect-ratio:4/3;max-height:100dvh;background:#eebad7;border:5px solid #a56da9;overflow:hidden}canvas{display:block;width:100%;height:100%;image-rendering:pixelated}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#3d285edb;padding:20px;text-align:center}.panel{border:5px solid #ffe5f1;background:#885b9a;padding:24px;max-width:500px;box-shadow:6px 6px 0 #3b2852}.panel h1{color:#fff1ac;text-shadow:3px 3px #62436f}button{font:inherit;border:3px solid #fff3fb;border-radius:5px;background:#f6aaca;color:#51335e;cursor:pointer;padding:10px 15px;font-weight:bold;touch-action:none}.hide{display:none!important}#hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:8px}#hud span{background:#563963e8;padding:8px;border:2px solid #f6bedb}#controls{position:absolute;bottom:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad{display:grid;grid-template-columns:repeat(3,43px);gap:3px;pointer-events:auto}.pad button{padding:10px 0}.pad [data-d=up]{grid-column:2}.pad [data-d=left]{grid-column:1}.pad [data-d=down]{grid-column:2}.pad [data-d=right]{grid-column:3}#action{pointer-events:auto}#skip{position:absolute;right:10px;bottom:10px}#modal{z-index:9}.letter{background:#fff4fb;color:#58385e;padding:16px;line-height:1.6;margin:12px 0;white-space:pre-wrap}#modal .panel{width:min(96%,460px)}@media(max-width:600px){main{width:100vw;height:100dvh;aspect-ratio:auto;border:0}.panel{padding:15px}#hud{font-size:12px}}
-</style></head><body><main><canvas id="scene" width="640" height="480"></canvas>
-<div id="hud" class="hide"><span id="count">🎁 0/9</span><span style="background:#563963e8;padding:8px;border:2px solid #f6bedb">Toque nos presentes!</span><button id="sound">🔇 Som</button></div>
-
-
-<div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Entrar no quartinho</button><p>Toque nas caixinhas para abrir cada surpresa! ✨</p></div></div>
-<div id="modal" class="overlay hide"><div class="panel"><h2 id="heading">🎀 Presente</h2><div id="letter" class="letter"></div><button id="close">Continuar explorando ♡</button></div></div>
-</main><script src="rafaela-sprite.js?v=7"></script><script src="rafaela-3d-image.js?v=8"></script><script>
-(()=>{
-const canvas=document.getElementById("scene"),ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=false;
-const rafaela3d=new Image();
-rafaela3d.src=window.RAFAELA_3D_SRC||"";
-const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[160,385],[525,386]];
-const wishes=[
-"Que os seus 18 anos venham com descobertas felizes, momentos leves e muitas risadas! 🌸",
-"Missão especial: encontre hoje três motivos para sorrir. Este presente já conta! ✨",
-"Você desbloqueou a fase 18! Que venham aventuras lindas e checkpoints felizes. 🎮",
-"Que você tenha coragem para sonhar e tranquilidade para ser quem você é. 💗",
-"📸 Aqui vamos colocar uma foto engraçada que você escolher.",
-"📸 Espaço reservado para nossa segunda foto divertida.",
-"🎬 Aqui entra o primeiro vídeo especial.",
-"🎬 Aqui entra o segundo vídeo especial.",
-"Mini missão: escolha uma qualidade sua e comemore! ⭐",
-"Surpresa, Rafaela! 💌\n\nFeliz aniversário de 18 anos! Este quartinho foi feito para deixar seu dia mais divertido.\n\n[A assinatura e a mensagem final ainda serão personalizadas.]"
-];
-let opened=new Set(),mode="start",position={x:320,y:445},keys=new Set(),near=-1,begin=0,sound=false,ac=null,step=0,nextNote=0,last=0;
-let giftFx=null,moving=false,walkClock=0,doorClickPlayed=false;
-const INTRO_MS=6700;
-try{opened=new Set(JSON.parse(localStorage.getItem("rafaela-gifts-v1")||"[]"))}catch{}
-const save=()=>localStorage.setItem("rafaela-gifts-v1",JSON.stringify([...opened]));
-const rect=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)};
-const word=(s,x,y,size=14,color="#fff")=>{ctx.fillStyle=color;ctx.font="bold "+size+"px monospace";ctx.textAlign="center";ctx.fillText(s,x,y)};
-function room(t){
-rect(0,0,640,300,"#f2c7e1");for(let y=0;y<300;y+=28){rect(0,y,640,3,"#fff0f7");for(let x=16;x<640;x+=56)rect(x,y+14,4,4,"#e99cc8")}
-rect(0,300,640,180,"#c998b8");for(let y=303;y<480;y+=26)rect(0,y,640,3,"#b581a5");
-rect(235,30,170,105,"#fff0f7");rect(246,40,148,85,"#9fbdd9");rect(317,40,7,85,"#fff");rect(246,82,148,6,"#fff");rect(352,51,23,23,"#fff4ac");
-rect(444,150,175,100,"#bd81ad");rect(454,158,155,73,"#fff0f7");rect(468,166,100,23,"#dab0df");rect(444,239,175,13,"#885e94");
-rect(26,135,142,100,"#c38eb9");rect(35,143,125,82,"#fff2fa");for(let x=46;x<150;x+=33){rect(x,151,22,32,"#dba6da");rect(x,192,22,24,"#b6d5cc")}
-rect(337,327,157,70,"#f6dce8");rect(346,336,139,52,"#e2a8ce");word("♡",414,374,37,"#fff2fa");
-rect(35,350,140,94,"#f4e1e8");rect(46,359,118,76,"#cda4d8");word("♡",104,408,43,"#fff4fa");
-// Entrada do quarto na borda inferior, atrás da personagem.
-rect(275,397,90,83,"#a679a1");rect(281,402,78,78,"#f1cde7");
-rect(289,410,62,70,"#8b6495");rect(294,415,52,65,"#c8a5d4");
-rect(279,470,82,10,"#fff1fa");word("ENTRADA",320,405,11,"#66466d");
-for(let x=28;x<640;x+=59){rect(x,14+Math.sin(t/700+x)*3,6,6,"#fff0b4")}
-}
-function gift(x,y,i,t){
- const done=opened.has(i),locked=i===9&&!unlock();
- const fx=giftFx&&giftFx.i===i?Math.max(0,Math.min(1,(t-giftFx.start)/1550)):-1;
- const lid=fx>=0?Math.max(0,Math.min(1,(fx-.25)/.46)):done?1:0;
- const wobble=fx>=0&&fx<.34?Math.sin(fx*83)*5*(1-fx):0;
- const bob=fx>=0?0:done?0:Math.sin(t/350+i)*2;
- const color=["#ff93c4","#c0a7ee","#9adcc8","#f6c68e"][i%4];
- ctx.save();ctx.translate(Math.round(x+wobble),Math.round(y+bob));
- // Base e fitas da caixinha.
- rect(-19,-11,38,29,"#9a658f");rect(-17,-13,34,29,color);
- rect(-4,-13,8,29,"#fff3b9");rect(-17,-4,34,6,"#fff3b9");
- if(lid>0){rect(-14,-13,28,5,"#5a3b67");rect(-10,-11,20,3,"#795175")}
- // Tampa separada que levanta e se inclina conforme a abertura.
- ctx.save();ctx.translate(-lid*10,-lid*28);ctx.rotate(-lid*.18);
- rect(-20,-18,40,8,"#ffecf7");rect(-12,-27,11,9,"#fff3b9");rect(1,-27,11,9,"#fff3b9");
- ctx.restore();
- if(fx>.46){
-  const burst=(fx-.46)/.54;
-  for(let k=0;k<9;k++){
-    const a=k*2*Math.PI/9+t/700,dist=12+burst*43;
-    rect(Math.cos(a)*dist,Math.sin(a)*dist-17,4,4,k%2?"#fff4ab":"#fff8f8");
-  }
-  if(fx>.77)word("✨",0,-60,21,"#fff7c2");
- }
- if(done)word("✓",22,-29,18,"#fff9ad");
- if(locked)word("🔒",0,6,19);
- word(String(i+1),0,34,13,"#543657");
- ctx.restore();
-}
-function corridor(p,t){
-  // Hall de uma casa comum: porta proporcional à personagem.
-  rect(0,0,640,480,"#e9e1d5");
-  rect(0,0,640,290,"#eee8df");
-  rect(0,290,640,190,"#b99e86");
-  for(let y=302;y<480;y+=32){
-    rect(0,y,640,3,"#a58c76");
-    for(let x=y%64===14?0:64;x<640;x+=128)rect(x,y+3,3,29,"#ad917c");
-  }
-  rect(0,283,640,9,"#fffdf7");rect(0,292,640,6,"#c8baab");
-  // Quadros pequenos e um aparador discreto.
-  rect(91,147,72,64,"#b59a80");rect(97,153,60,52,"#fff8e8");
-  rect(104,161,46,38,"#c4d7c7");rect(109,180,37,15,"#8bb69d");
-  rect(482,155,66,59,"#b49b87");rect(488,161,54,47,"#fff8eb");
-  rect(493,165,44,39,"#d5c5bb");word("✿",515,194,23,"#8e9d83");
-  rect(448,267,122,8,"#a58d7a");rect(464,275,8,33,"#a58d7a");rect(546,275,8,33,"#a58d7a");
-  rect(463,253,22,14,"#899d84");rect(470,244,8,11,"#79956e");
-  // Sombra da entrada e moldura: 82px de largura, 124px de altura.
-  rect(278,174,84,130,"#b59e8c");
-  rect(284,180,72,119,"#fefbf1");
-  rect(289,185,62,111,"#725c69");
-  const raw=Math.max(0,Math.min(1,(p-.58)/.19));
-  const opening=raw*raw*(3-2*raw);
-  if(opening>0){
-    rect(290,185,61,110,"#d99fcc");
-    rect(293,188,55,103,"#a379b1");
-    rect(300,203,41,78,"#debbdc");
-    if(opening>.45){word("✦",318,230,15,"#fff4b5");word("✦",333,257,11,"#fff4b5")}
-  }
-  // A folha gira sobre a dobradiça, em vez de escorregar pela parede.
-  const doorW=Math.max(3,61*(1-opening));
-  rect(290,185,doorW,110,"#b58e77");
-  rect(294,190,Math.max(0,doorW-8),99,"#dac1a8");
-  if(opening<.8){
-    rect(290+doorW-13,263,5,6,"#e8cc8f");
-    rect(290+doorW-15,269,9,2,"#9d7b68");
-  }
-  // Pequeno tapete: pista visual da altura real da porta.
-  rect(263,308,114,12,"#b0a28e");rect(273,311,94,5,"#d4c6ae");
-  word(p<.43?"Um corredor bem comum...":p<.58?"Será que esta porta abre?":p<.78?"Clic... a porta se abriu!":"Uma surpresa espera lá dentro ♡",320,47,17,"#725d66");
-}
-function character(x,y,back=false,walking=false,t=0,pose=""){window.drawRafaelaSprite(ctx,x,y,back,walking,t,pose)}
-function backAvatar(x,y,t,pose="",walking=false){character(x,y,true,walking,t,pose)}
-function avatar(){
- if(rafaela3d.complete&&rafaela3d.naturalWidth){
-  ctx.save();
-  ctx.fillStyle="rgba(71,42,77,.2)";
-  ctx.beginPath();
-  ctx.ellipse(position.x,position.y-3,43,10,0,0,Math.PI*2);
-  ctx.fill();
-  ctx.imageSmoothingEnabled=true;
-  const height=248,width=116;
-  ctx.drawImage(rafaela3d,Math.round(position.x-width/2),Math.round(position.y-height),width,height);
-  ctx.restore();
- }else{
-  window.drawRafaelaSprite(ctx,position.x,position.y,false);
- }
-}
-function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
-function tone(hz,seconds=.2){if(!sound)return;try{ac??=new AudioContext();if(ac.state==="suspended")ac.resume();const o=ac.createOscillator(),v=ac.createGain();o.type="sine";o.frequency.value=hz;v.gain.setValueAtTime(.025,ac.currentTime);v.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+seconds);o.connect(v).connect(ac.destination);o.start();o.stop(ac.currentTime+seconds)}catch{}}
-function refresh(){$("count").textContent="🎁 "+Array.from(opened).filter(i=>i<9).length+"/9";}
-
-function openGift(i){
- if(mode!=="play" || i<0)return;
- if(i===9&&!unlock()){tone(220,.15);alert("🔒 Abra primeiro os outros nove presentes! 🎀");return}
- giftFx={i,start:performance.now()};
- mode="gift-opening";tone(493,.13);
-}
-function showGift(i){
- opened.add(i);save();refresh();giftFx=null;mode="modal";
- $("heading").textContent=i===9?"💌 Última surpresa":"🎀 Presente "+(i+1);
- $("letter").textContent=wishes[i];$("modal").classList.remove("hide");
- tone(659,.2);
-}
-function play(){
- mode="play";position={x:320,y:387};
- $("start").classList.add("hide");$("hud").classList.remove("hide");refresh();
-}
-function chooseGift(event){
- const bounds=canvas.getBoundingClientRect();
- const x=(event.clientX-bounds.left)*canvas.width/bounds.width;
- const y=(event.clientY-bounds.top)*canvas.height/bounds.height;
- let picked=-1,nearest=999;
- gifts.forEach(([gx,gy],i)=>{
-   const dist=Math.hypot(x-gx,y-gy);
-   if(dist<55&&dist<nearest){picked=i;nearest=dist}
- });
- return picked;
-}
-function frame(t){
- room(t);gifts.forEach((v,i)=>gift(...v,i,t));
- avatar();
- if(mode==="gift-opening"&&giftFx&&t-giftFx.start>=1550)showGift(giftFx.i);
- if(sound&&mode!=="start"&&t>nextNote){
-  const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0];
-  const note=melody[step++%melody.length];if(note)tone(note,.3);nextNote=t+490;
- }
- word("v8 • Rafaela 3D",551,470,11,"#60436f");
- requestAnimationFrame(frame);
-}
-$("begin").onclick=()=>{sound=true;$("sound").textContent="🔊 Som";tone(523,.1);play()};
-$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
-$("sound").onclick=()=>{sound=!sound;$("sound").textContent=sound?"🔊 Som":"🔇 Som";if(sound)tone(523)};
-canvas.style.cursor="pointer";canvas.style.touchAction="manipulation";
-canvas.addEventListener("click",e=>{if(mode!=="play")return;const i=chooseGift(e);if(i>=0)openGift(i)});
-window.addEventListener("keydown",e=>{
- if(mode!=="play")return;
- const i=e.key==="0"?9:/^[1-9]$/.test(e.key)?Number(e.key)-1:-1;
- if(i>=0)openGift(i);
-});
-requestAnimationFrame(frame);
-})();
-</script></body></html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#432b67">
+<title>Uma surpresinha para Rafaela 🎀</title>
+<meta name="description" content="Um quartinho cheio de presentes e surpresas de aniversário para a Rafaela!">
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+<div class="page">
+<header class="topbar">
+ <div class="brand"><span class="heart">♥</span><span>Rafaela <span aria-hidden="true">✦</span> 18 anos</span></div>
+ <div class="status">
+  <span class="counter">🎁 <span id="progress" aria-live="polite">0 / 9</span></span>
+  <button id="sound" class="iconbutton" aria-label="Ligar música" title="Música">🔇</button>
+  <button id="reset" class="iconbutton" aria-label="Recomeçar presentes" title="Recomeçar">↺</button>
+ </div>
+</header>
+<main>
+ <section class="scene-container" aria-label="Quartinho de boneca em bloquinhos, com a Rafaela sentada e presentes">
+  <div class="scene">
+    <img class="room" src="quarto-voxel.svg?v=1" alt="Quarto de bloquinhos em tons pastel, com cama, computador, pelúcias, estrelinhas e Rafaela sentada no tapete">
+    <svg class="gift-map" id="giftMap" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-label="Presentes interativos espalhados pelo quarto"></svg>
+  </div>
+ </section>
+ <div class="caption">🎀 Bem-vinda ao seu quartinho secreto! Clique em cada presente para descobrir uma surpresa. ♡</div>
+ <nav id="fastGifts" class="quick" aria-label="Atalhos dos dez presentes"></nav>
+ <p class="help" id="secretStatus">🔒 O presente 10 abre depois dos outros nove.</p>
+</main>
+</div>
+<section id="welcome" class="backdrop" aria-labelledby="welcomeTitle">
+ <div class="panel">
+   <div class="sparkles" aria-hidden="true">🎀 ✨ 🎁</div>
+   <p class="eyebrow">07 de novembro de 2026</p>
+   <h1 id="welcomeTitle">Uma surpresinha para Rafaela!</h1>
+   <p>Você desbloqueou a <strong>fase 18</strong>! Um quartinho de bloquinhos, dez presentes e algumas surpresinhas esperam por você.</p>
+   <p>Abra os presentes em qualquer ordem. O décimo só se revela no final. 💗</p>
+   <button id="start" class="primary">Entrar no quartinho 🎮</button>
+ </div>
+</section>
+<section id="modal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+ <div class="panel">
+  <button id="closeModal" class="close" aria-label="Fechar presente">×</button>
+  <div class="sparkles" aria-hidden="true">🎁 ✨ 💖</div>
+  <h2 id="modalTitle">Surpresa!</h2>
+  <div id="placeholder" class="note" hidden></div>
+  <div class="note" id="modalText"></div>
+  <button id="continue" class="primary" onclick="document.getElementById('closeModal').click()">Continuar explorando ♡</button>
+ </div>
+</section>
+<div id="toast" hidden role="status" style="position:fixed;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);background:#fce6fb;color:#713c7b;border:3px solid #bb83bd;border-radius:13px;padding:14px;max-width:90vw;text-align:center;font-weight:900;box-shadow:0 10px 34px #25132c99"></div>
+<script src="game.js?v=1" defer></script>
+</body>
+</html>
