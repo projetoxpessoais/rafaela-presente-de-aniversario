@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#402a83"/><stop offset="1" stop-color="#945dad"/></linearGradient>
+<linearGradient id="back" x2=".25" y2="1"><stop stop-color="#f2bedc"/><stop offset="1" stop-color="#d08bb8"/></linearGradient>
+<linearGradient id="right" x2="1" y2=".8"><stop stop-color="#dfb2ee"/><stop offset="1" stop-color="#b87bd2"/></linearGradient>
+<linearGradient id="floor" x2="0" y2="1"><stop stop-color="#dba1ac"/><stop offset="1" stop-color="#b77f9c"/></linearGradient>
+<radialGradient id="bg"><stop stop-color="#6b3c97"/><stop offset="1" stop-color="#27183f"/></radialGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="soft"><feGaussianBlur stdDeviation="16"/></filter>
+</defs>
+<rect width="1200" height="700" fill="url(#bg)"/>
+<ellipse cx="602" cy="656" rx="560" ry="36" fill="#190e29" opacity=".58" filter="url(#soft)"/>
+<!-- open-front 2.5D dollhouse walls -->
+<polygon points="60,118 600,36 600,338 60,463" fill="url(#back)" stroke="#fbe2ee" stroke-width="13" stroke-linejoin="round"/>
+<polygon points="600,36 1140,115 1140,458 600,338" fill="url(#right)" stroke="#fbe2ee" stroke-width="13" stroke-linejoin="round"/>
+<polygon points="60,462 600,336 1140,457 603,676" fill="url(#floor)" stroke="#fbe3dd" stroke-width="13" stroke-linejoin="round"/>
+<polygon points="60,462 603,676 603,694 60,482" fill="#8b608b"/>
+<polygon points="603,676 1140,457 1140,475 603,694" fill="#754b84"/>
+<path d="M70 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M121 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M172 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M223 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M274 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M325 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M376 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M427 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M478 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M529 70h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M92 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M143 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M194 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M245 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M296 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M347 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M398 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M449 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M500 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M551 124h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M70 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M121 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M172 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M223 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M274 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M325 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M376 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M427 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M478 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M529 178h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M92 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M143 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M194 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M245 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M296 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M347 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M398 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M449 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M500 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M551 232h37" stroke="#fff1f9" opacity=".11" stroke-width="3"/><path d="M55 420L580 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M148 420L605 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M241 420L630 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M334 420L655 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M427 420L680 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M520 420L705 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M613 420L730 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M706 420L755 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M799 420L780 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M892 420L805 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M985 420L830 692" stroke="#805274" stroke-width="2" opacity=".18"/><path d="M1078 420L855 692" stroke="#805274" stroke-width="2" opacity=".18"/>
+<!-- wall windows: evening sky -->
+<rect x="350" y="125" width="198" height="166" rx="5" fill="#fff0fa" stroke="#b17aaf" stroke-width="9"/>
+<rect x="361" y="137" width="176" height="143" fill="url(#sky)"/>
+<circle cx="491" cy="172" r="22" fill="#fff4a6" filter="url(#glow)"/>
+<rect x="390" y="136" width="4" height="4" fill="#fffbd1"/><rect x="427" y="159" width="4" height="4" fill="#fffbd1"/><rect x="464" y="182" width="4" height="4" fill="#fffbd1"/><rect x="501" y="205" width="4" height="4" fill="#fffbd1"/><rect x="538" y="143" width="4" height="4" fill="#fffbd1"/><rect x="425" y="166" width="4" height="4" fill="#fffbd1"/><rect x="462" y="189" width="4" height="4" fill="#fffbd1"/><rect x="499" y="212" width="4" height="4" fill="#fffbd1"/><rect x="536" y="150" width="4" height="4" fill="#fffbd1"/><rect x="423" y="173" width="4" height="4" fill="#fffbd1"/><rect x="460" y="196" width="4" height="4" fill="#fffbd1"/><rect x="497" y="219" width="4" height="4" fill="#fffbd1"/><rect x="534" y="157" width="4" height="4" fill="#fffbd1"/><rect x="421" y="180" width="4" height="4" fill="#fffbd1"/>
+<rect x="442" y="137" width="10" height="143" fill="#fae9fd"/>
+<rect x="361" y="205" width="176" height="9" fill="#fae9fd"/>
+<path d="M352 127Q378 212 355 286Q392 278 398 127" fill="#f6b4d8" stroke="#d28aaf" stroke-width="5"/>
+<path d="M546 127Q512 224 547 286Q508 278 505 127" fill="#f6b4d8" stroke="#d28aaf" stroke-width="5"/>
+<!-- warm star string lights -->
+<path d="M93 88Q586 155 1104 75" fill="none" stroke="#7e537a" stroke-width="6"/>
+<rect x="100" y="70" width="13" height="13" rx="3" fill="#ffbae7" filter="url(#glow)"/><rect x="103" y="73" width="7" height="7" fill="#fffbea"/><rect x="171" y="76.95944854577968" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="174" y="79.95944854577968" width="7" height="7" fill="#fffbea"/><rect x="242" y="82.53323055403973" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="245" y="85.53323055403973" width="7" height="7" fill="#fffbea"/><rect x="313" y="85.61157372522655" width="13" height="13" rx="3" fill="#ffbae7" filter="url(#glow)"/><rect x="316" y="88.61157372522655" width="7" height="7" fill="#fffbea"/><rect x="384" y="85.58156209405112" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="387" y="88.58156209405112" width="7" height="7" fill="#fffbea"/><rect x="455" y="82.44917115020674" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="458" y="85.44917115020674" width="7" height="7" fill="#fffbea"/><rect x="526" y="76.83807808374128" width="13" height="13" rx="3" fill="#ffbae7" filter="url(#glow)"/><rect x="529" y="79.83807808374128" width="7" height="7" fill="#fffbea"/><rect x="597" y="69.86548404212562" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="600" y="72.86548404212562" width="7" height="7" fill="#fffbea"/><rect x="668" y="62.91967290728236" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="671" y="65.91967290728236" width="7" height="7" fill="#fffbea"/><rect x="739" y="57.38359592918088" width="13" height="13" rx="3" fill="#ffbae7" filter="url(#glow)"/><rect x="742" y="60.38359592918088" width="7" height="7" fill="#fffbea"/><rect x="810" y="54.35951811735845" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="813" y="57.35951811735845" width="7" height="7" fill="#fffbea"/><rect x="881" y="54.449550889570865" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="884" y="57.449550889570865" width="7" height="7" fill="#fffbea"/><rect x="952" y="57.635768199104206" width="13" height="13" rx="3" fill="#ffbae7" filter="url(#glow)"/><rect x="955" y="60.635768199104206" width="7" height="7" fill="#fffbea"/><rect x="1023" y="63.28377571456226" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="1026" y="66.28377571456227" width="7" height="7" fill="#fffbea"/><rect x="1094" y="70.26902240774959" width="13" height="13" rx="3" fill="#fff1a2" filter="url(#glow)"/><rect x="1097" y="73.26902240774959" width="7" height="7" fill="#fffbea"/>
+<!-- left shelf, picture and greenery -->
+<rect x="103" y="173" width="177" height="12" fill="#8f6587"/>
+<polygon points="103,185 280,185 265,197 103,197" fill="#6c486f"/>
+<rect x="127" y="140" width="34" height="34" fill="#75c3a9" stroke="#386a69" stroke-width="6"/>
+<rect x="177" y="131" width="52" height="43" fill="#e7c74f" stroke="#a9824a" stroke-width="6"/>
+<path d="M189 146h11m10 0h10m-18 11h6" stroke="#ffe69b" stroke-width="6"/>
+<rect x="264" y="96" width="28" height="27" rx="4" fill="#b87a94"/>
+<path d="M277 98Q242 67 260 49M279 92Q307 64 293 48M281 85Q267 58 254 66" fill="none" stroke="#4f9b69" stroke-width="10"/>
+<rect x="94" y="265" width="115" height="92" fill="#fff5e9" stroke="#9b6893" stroke-width="12"/>
+<path d="M112 337L148 297L185 337" fill="#add7c4"/><circle cx="159" cy="286" r="10" fill="#f0c87a"/>
+<!-- books on left -->
+<rect x="120" y="228" width="134" height="10" fill="#85556e"/>
+<rect x="135" y="204" width="18" height="24" fill="#b5e2df"/><rect x="156" y="198" width="18" height="30" fill="#ffc7b8"/><rect x="178" y="205" width="16" height="23" fill="#ead097"/><rect x="196" y="199" width="20" height="29" fill="#e8bdf2"/>
+<!-- right gaming desk -->
+<polygon points="814,383 1052,361 1083,381 846,406" fill="#f6cee9" stroke="#97648e" stroke-width="8"/>
+<polygon points="846,406 1083,381 1083,407 846,431" fill="#a16f9d"/>
+<rect x="860" y="416" width="12" height="94" fill="#a1789b"/>
+<rect x="1032" y="395" width="12" height="94" fill="#a1789b"/>
+<rect x="885" y="250" width="173" height="114" rx="7" fill="#33264c" stroke="#f6badf" stroke-width="12"/>
+<rect x="898" y="263" width="147" height="88" fill="#705ab1"/>
+<path d="M950 307l15-15 15 15-15 22z" fill="#ffb4e1"/>
+<rect x="955" y="359" width="33" height="10" fill="#3a284c"/>
+<rect x="927" y="380" width="82" height="9" fill="#b9b0f0"/>
+<!-- game chair -->
+<polygon points="1015,417 1070,411 1085,450 1030,457" fill="#ec9aca" stroke="#b06baf" stroke-width="8"/>
+<rect x="1051" y="455" width="15" height="77" fill="#bd89b5"/>
+<ellipse cx="1056" cy="537" rx="53" ry="13" fill="#ae789b"/>
+<!-- right bookshelf and colored books -->
+<rect x="1024" y="181" width="132" height="15" fill="#8c579c"/>
+<rect x="1018" y="237" width="145" height="17" fill="#a06daa"/>
+<rect x="1030" y="205" width="8" height="31" fill="#ffc0de" stroke="#79537e" stroke-width="2"/><rect x="1040" y="198" width="8" height="38" fill="#85d1d0" stroke="#79537e" stroke-width="2"/><rect x="1050" y="191" width="8" height="45" fill="#f8d278" stroke="#79537e" stroke-width="2"/><rect x="1060" y="205" width="8" height="31" fill="#ffc0de" stroke="#79537e" stroke-width="2"/><rect x="1070" y="198" width="8" height="38" fill="#85d1d0" stroke="#79537e" stroke-width="2"/><rect x="1080" y="191" width="8" height="45" fill="#f8d278" stroke="#79537e" stroke-width="2"/><rect x="1090" y="205" width="8" height="31" fill="#ffc0de" stroke="#79537e" stroke-width="2"/><rect x="1100" y="198" width="8" height="38" fill="#85d1d0" stroke="#79537e" stroke-width="2"/><rect x="1110" y="191" width="8" height="45" fill="#f8d278" stroke="#79537e" stroke-width="2"/>
+<rect x="1100" y="139" width="35" height="38" fill="#83d5b4" stroke="#6f9f87" stroke-width="6"/>
+<rect x="1108" y="131" width="20" height="20" fill="#548b5f"/>
+<!-- bed left voxel-style -->
+<polygon points="109,399 341,356 468,412 244,466" fill="#f6d8ed" stroke="#a97aaf" stroke-width="8"/>
+<polygon points="244,466 468,412 468,474 244,534" fill="#ad6d9f"/>
+<polygon points="109,399 244,466 244,535 109,469" fill="#c88abb"/>
+<polygon points="135,384 335,356 432,407 239,445" fill="#f7b9d6"/>
+<polygon points="143,397 337,369 423,407 239,438" fill="#ed9cca"/>
+<polygon points="140,373 225,358 284,389 197,407" fill="#fff5f8" stroke="#dca8cb" stroke-width="7"/>
+<polygon points="246,352 315,340 374,372 301,387" fill="#fff5f8" stroke="#dca8cb" stroke-width="7"/>
+<!-- blocky cat pillow -->
+<rect x="188" y="364" width="43" height="33" rx="5" fill="#fffefa"/>
+<path d="M190 369v-19l12 10m25 10v-20l-12 9" fill="#fffefa" stroke="#fffefa" stroke-width="6"/>
+<rect x="199" y="377" width="5" height="5" fill="#6d446a"/><rect x="218" y="377" width="5" height="5" fill="#6d446a"/><rect x="207" y="386" width="8" height="4" fill="#eb95bd"/>
+<!-- bedside lamp -->
+<rect x="96" y="317" width="52" height="12" fill="#a16b94"/>
+<rect x="116" y="288" width="10" height="28" fill="#ffecc7"/>
+<polygon points="103,287 138,287 130,261 111,261" fill="#ffe6a8" filter="url(#glow)"/>
+<!-- plush bear on right -->
+<rect x="1055" y="439" width="90" height="100" rx="33" fill="#bd8c69" stroke="#7b5570" stroke-width="7"/>
+<circle cx="1074" cy="429" r="16" fill="#bd8c69" stroke="#7b5570" stroke-width="6"/>
+<circle cx="1135" cy="429" r="16" fill="#bd8c69" stroke="#7b5570" stroke-width="6"/>
+<circle cx="1102" cy="448" r="42" fill="#dcb18a"/>
+<rect x="1087" y="439" width="7" height="7" fill="#533d45"/><rect x="1114" y="439" width="7" height="7" fill="#533d45"/>
+<rect x="1095" y="451" width="17" height="10" rx="4" fill="#fff0d9"/><rect x="1100" y="452" width="8" height="5" fill="#69484e"/>
+<path d="M1084 479l19 15 19-15-19-8z" fill="#e68eb9"/>
+<!-- rug with heart -->
+<ellipse cx="613" cy="537" rx="245" ry="116" fill="#f8e2f4" opacity=".92" stroke="#eebfe4" stroke-width="17"/>
+<ellipse cx="613" cy="536" rx="209" ry="91" fill="#efafd5" stroke="#f7d9f2" stroke-width="13" stroke-dasharray="7 11"/>
+<path d="M613 574C548 525 552 492 582 492C601 492 611 507 613 510C617 505 625 492 646 492C686 492 667 535 613 574" fill="#f18ac4" opacity=".72"/>
+<!-- seated Rafaela, blocky avatar, fixed pose -->
+<g transform="translate(608 391)">
+<ellipse cx="0" cy="162" rx="79" ry="20" fill="#b66f9c" opacity=".4"/>
+<!-- hair back, wavy locks -->
+<path d="M-53 -58L-58 -20L-69 20L-53 58L-65 78L-44 94L-37 53L45 46L57 89L71 72L62 46L68 7L52 -52L27 -75L-29 -79Z" fill="#56343a" stroke="#3a2836" stroke-width="7"/>
+<path d="M-55 -12L-65 8L-49 29L-61 53L-45 73M54 -6L68 18L50 36L65 55" fill="none" stroke="#9e6b5c" stroke-width="9"/>
+<!-- torso: white shirt + black vest -->
+<path d="M-47 47L-31 35L34 35L50 52L44 113L-46 113Z" fill="#f5f2ed" stroke="#392d40" stroke-width="7"/>
+<path d="M-39 44L-12 43L-5 105L-41 108Z" fill="#30333f"/><path d="M14 43L40 44L42 108L7 105Z" fill="#30333f"/>
+<path d="M-5 44l5 11 9-11" fill="none" stroke="#dfcad5" stroke-width="5"/>
+<!-- arms holding cheeks -->
+<path d="M-40 56L-66 85L-34 85L-20 55" fill="#f6efe7" stroke="#403141" stroke-width="7"/>
+<path d="M39 55L61 85L36 84L23 54" fill="#f6efe7" stroke="#403141" stroke-width="7"/>
+<!-- head -->
+<path d="M-46 -45Q0 -81 47 -45L42 14Q18 49 0 46Q-32 46 -45 11Z" fill="#dfae91" stroke="#48323d" stroke-width="7"/>
+<path d="M-52 -44Q-51 -75 -20 -86Q31 -93 50 -52L49 -28Q28 -53 6 -55L-39 -29Z" fill="#493137"/>
+<path d="M-47 -35L-32 -51L-11 -60M-2 -66L28 -60L41 -37" fill="none" stroke="#95675a" stroke-width="9"/>
+<!-- glasses -->
+<rect x="-38" y="-22" width="33" height="24" rx="5" fill="none" stroke="#2c2734" stroke-width="7"/>
+<rect x="7" y="-22" width="33" height="24" rx="5" fill="none" stroke="#2c2734" stroke-width="7"/>
+<path d="M-5 -14h12" stroke="#2c2734" stroke-width="6"/>
+<rect x="-24" y="-11" width="7" height="8" fill="#382f38"/><rect x="20" y="-11" width="7" height="8" fill="#382f38"/>
+<path d="M-8 17Q1 25 12 15" fill="none" stroke="#a96377" stroke-width="4"/>
+<!-- folded knees and shoes -->
+<path d="M-44 110L-89 129L-59 154L-9 140L18 147L60 154L86 135L43 110Z" fill="#353340" stroke="#302739" stroke-width="9"/>
+<path d="M-72 145L-47 151L-54 171L-91 162Z" fill="#fff6f1" stroke="#3d3344" stroke-width="7"/>
+<path d="M56 150L80 143L94 160L60 172Z" fill="#fff6f1" stroke="#3d3344" stroke-width="7"/>
+</g>
+<!-- foreground pixel sparkles -->
+<path d="M318 592h18m-9-9v18M885 580h20m-10-10v20M717 357h13m-7-7v14" stroke="#fff2ab" stroke-width="5" filter="url(#glow)"/>
+</svg>
