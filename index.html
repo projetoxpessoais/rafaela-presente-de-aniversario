@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#4c2467">
   <title>Uma surpresa para Rafa</title>
   <meta name="description" content="Um quartinho de aniversário com fotos da família, vídeo e uma mensagem especial.">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body>
 <div class="page">
@@ -22,10 +22,12 @@
     <section class="scene-container" aria-label="Quartinho de aniversário da Rafa, com quadros da família, televisão e uma mensagem especial">
       <div class="scene" id="scene">
         <img class="room" src="quarto-voxel.svg?v=1" alt="Quartinho rosa e lilás, estilo Minecraft, com Rafa sentada de tênis rosa e branco e fotografias da família" draggable="false">
-        <button type="button" id="singleGift" class="single-gift" aria-label="Abrir o presente especial">
-  <span class="gift-art" aria-hidden="true"><span class="gift-bow"></span></span>
-  <span class="gift-copy"><strong>Um presente especial</strong><span id="giftHint">Clique para abrir</span></span>
-</button>
+        <button type="button" id="singleGift" class="single-gift" aria-label="Abrir o presente especial" title="Abrir a cartinha para a Rafa">
+          <span class="letter-fly" aria-hidden="true"><span>Para a Rafa</span></span>
+          <span class="gift-art" aria-hidden="true"></span>
+          <span class="gift-lid" aria-hidden="true"><span class="gift-bow"></span></span>
+          <span class="gift-copy"><strong>Para a Rafa</strong><span id="giftHint">Toque para abrir</span></span>
+        </button>
         <div id="memoryMap" class="memory-map" aria-label="Quadros com fotografias clicáveis e televisão"></div>
       </div>
     </section>
@@ -46,13 +48,20 @@
   </div>
 </section>
 <section id="modal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle">
-  <div class="panel">
-    <button id="closeModal" class="close" aria-label="Fechar presente">×</button>
-    <div class="sparkles" aria-hidden="true">✦ · ✧ · ✦</div>
-    <h2 id="modalTitle">Surpresa!</h2>
-    <div id="placeholder" class="note" hidden></div>
-    <div class="note" id="modalText"></div>
-    <button id="continue" class="primary" onclick="document.getElementById('closeModal').click()">Continuar explorando ♡</button>
+  <div class="panel letter-panel">
+    <button id="closeModal" class="close" aria-label="Fechar carta">×</button>
+    <div class="letter-heading" aria-hidden="true">✦ · CARTINHA DE ANIVERSÁRIO · ✦</div>
+    <h2 id="modalTitle">Uma cartinha para a Rafa</h2>
+    <p id="typingStatus" class="typing-status" role="status" aria-live="polite">Preparando a cartinha...</p>
+    <div class="letter-scroll" id="letterScroll" tabindex="0" aria-label="Texto da carta de aniversário">
+      <div class="note letter-text" id="modalText"></div>
+    </div>
+    <div class="typing-controls">
+      <button id="toggleTyping" type="button" class="secondary">Pausar escrita</button>
+      <button id="showAll" type="button" class="secondary">Mostrar tudo</button>
+      <button id="restartTyping" type="button" class="secondary" hidden>Recomeçar escrita</button>
+    </div>
+    <button id="continue" type="button" class="primary">Voltar ao quartinho</button>
   </div>
 </section>
 <section id="memoryModal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="memoryTitle">
@@ -69,7 +78,7 @@
 <script src="cena-familia.js?v=10" defer></script>
 <script src="fotos-familia.js?v=10" defer></script>
 <script src="video-familia.js?v=10" defer></script>
-<script src="game.js?v=17" defer></script>
+<script src="game.js?v=18" defer></script>
 <script src="memorias.js?v=11" defer></script>
 </body>
 </html>
