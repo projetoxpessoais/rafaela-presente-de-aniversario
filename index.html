@@ -1,56 +1,72 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#432b67">
-<title>Uma surpresinha para Rafaela 🎀</title>
-<meta name="description" content="Um quartinho cheio de presentes e surpresas de aniversário para a Rafaela!">
-<link rel="stylesheet" href="styles.css?v=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#4c2467">
+  <title>Uma surpresinha para Rafaela 🎀</title>
+  <meta name="description" content="Um quartinho de aniversário com fotos da família, vídeo e dez presentinhos.">
+  <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
 <div class="page">
-<header class="topbar">
- <div class="brand"><span class="heart">♥</span><span>Rafaela <span aria-hidden="true">✦</span> 18 anos</span></div>
- <div class="status">
-  <span class="counter">🎁 <span id="progress" aria-live="polite">0 / 9</span></span>
-  <button id="sound" class="iconbutton" aria-label="Ligar música" title="Música">🔇</button>
-  <button id="reset" class="iconbutton" aria-label="Recomeçar presentes" title="Recomeçar">↺</button>
- </div>
-</header>
-<main>
- <section class="scene-container" aria-label="Quartinho de boneca em bloquinhos, com a Rafaela sentada e presentes">
-  <div class="scene">
-    <img class="room" src="quarto-voxel.svg?v=1" alt="Quarto de bloquinhos em tons pastel, com cama, computador, pelúcias, estrelinhas e Rafaela sentada no tapete">
-    <svg class="gift-map" id="giftMap" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-label="Presentes interativos espalhados pelo quarto"></svg>
-  </div>
- </section>
- <div class="caption">🎀 Bem-vinda ao seu quartinho secreto! Clique em cada presente para descobrir uma surpresa. ♡</div>
- <nav id="fastGifts" class="quick" aria-label="Atalhos dos dez presentes"></nav>
- <p class="help" id="secretStatus">🔒 O presente 10 abre depois dos outros nove.</p>
-</main>
+  <header class="topbar">
+    <div class="brand"><span class="heart">♥</span><span>Rafaela <span aria-hidden="true">✦</span> 18 anos</span></div>
+    <div class="status">
+      <span class="counter">🎁 <span id="progress" aria-live="polite">0 / 9</span></span>
+      <button id="sound" class="iconbutton" aria-label="Ligar música" title="Música">🔇</button>
+      <button id="reset" class="iconbutton" aria-label="Recomeçar presentes" title="Recomeçar">↺</button>
+    </div>
+  </header>
+  <main>
+    <section class="scene-container" aria-label="Quartinho de aniversário da Rafaela, com quadros da família, televisão e dez presentes">
+      <div class="scene" id="scene">
+        <img class="room" src="quarto-voxel.svg?v=1" alt="Quartinho rosa e lilás, estilo Minecraft, com Rafaela sentada de tênis rosa e branco, fotografias da família e presentes" draggable="false">
+        <svg class="gift-map" id="giftMap" viewBox="0 0 1672 941" preserveAspectRatio="none" aria-label="Dez presentes interativos"></svg>
+        <div id="memoryMap" class="memory-map" aria-label="Quadros com fotografias clicáveis e televisão"></div>
+      </div>
+    </section>
+    <div class="caption">🎀 Clique nos <strong>quadros</strong> para ver as fotos, na <strong>televisão</strong> para assistir ao vídeo e nos <strong>presentes</strong> para abrir surpresas! ♡</div>
+    <nav class="memory-shortcuts" id="memoryShortcuts" aria-label="Atalhos para quadros e televisão"></nav>
+    <nav class="quick" id="fastGifts" aria-label="Atalhos dos dez presentes"></nav>
+    <p class="help" id="secretStatus">🔒 O presente 10 abre depois dos outros nove.</p>
+  </main>
 </div>
 <section id="welcome" class="backdrop" aria-labelledby="welcomeTitle">
- <div class="panel">
-   <div class="sparkles" aria-hidden="true">🎀 ✨ 🎁</div>
-   <p class="eyebrow">07 de novembro de 2026</p>
-   <h1 id="welcomeTitle">Uma surpresinha para Rafaela!</h1>
-   <p>Você desbloqueou a <strong>fase 18</strong>! Um quartinho de bloquinhos, dez presentes e algumas surpresinhas esperam por você.</p>
-   <p>Abra os presentes em qualquer ordem. O décimo só se revela no final. 💗</p>
-   <button id="start" class="primary">Entrar no quartinho 🎮</button>
- </div>
+  <div class="panel">
+    <div class="sparkles" aria-hidden="true">🎀 ✨ 🎁</div>
+    <p class="eyebrow">07 de novembro de 2026</p>
+    <h1 id="welcomeTitle">Uma surpresinha para Rafaela!</h1>
+    <p>Você desbloqueou a <strong>fase 18</strong>! Um quartinho de bloquinhos, fotos da família, um vídeo e dez surpresinhas esperam por você.</p>
+    <p>Explore as lembranças e abra os presentes. O décimo se revela por último. 💗</p>
+    <button id="start" class="primary">Entrar no quartinho 🎮</button>
+  </div>
 </section>
 <section id="modal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle">
- <div class="panel">
-  <button id="closeModal" class="close" aria-label="Fechar presente">×</button>
-  <div class="sparkles" aria-hidden="true">🎁 ✨ 💖</div>
-  <h2 id="modalTitle">Surpresa!</h2>
-  <div id="placeholder" class="note" hidden></div>
-  <div class="note" id="modalText"></div>
-  <button id="continue" class="primary" onclick="document.getElementById('closeModal').click()">Continuar explorando ♡</button>
- </div>
+  <div class="panel">
+    <button id="closeModal" class="close" aria-label="Fechar presente">×</button>
+    <div class="sparkles" aria-hidden="true">🎁 ✨ 💖</div>
+    <h2 id="modalTitle">Surpresa!</h2>
+    <div id="placeholder" class="note" hidden></div>
+    <div class="note" id="modalText"></div>
+    <button id="continue" class="primary" onclick="document.getElementById('closeModal').click()">Continuar explorando ♡</button>
+  </div>
+</section>
+<section id="memoryModal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="memoryTitle">
+  <div class="panel memory-panel">
+    <button id="closeMemory" class="close" aria-label="Fechar lembrança">×</button>
+    <h2 id="memoryTitle">Uma lembrança especial 💗</h2>
+    <img id="memoryPhoto" alt="Foto da família" hidden>
+    <video id="memoryVideo" controls playsinline preload="none" hidden></video>
+    <p class="memory-footnote">✨ Um pedacinho de história guardado com carinho.</p>
+    <button id="backToRoom" class="primary">Voltar ao quartinho ♡</button>
+  </div>
 </section>
 <div id="toast" hidden role="status" style="position:fixed;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);background:#fce6fb;color:#713c7b;border:3px solid #bb83bd;border-radius:13px;padding:14px;max-width:90vw;text-align:center;font-weight:900;box-shadow:0 10px 34px #25132c99"></div>
-<script src="game.js?v=1" defer></script>
+<script src="cena-familia.js?v=10" defer></script>
+<script src="fotos-familia.js?v=10" defer></script>
+<script src="video-familia.js?v=10" defer></script>
+<script src="game.js?v=10" defer></script>
+<script src="memorias.js?v=10" defer></script>
 </body>
 </html>
