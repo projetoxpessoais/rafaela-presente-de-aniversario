@@ -584,3 +584,56 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
   .capsule-glow,.time-capsule.opening .capsule-lid,.time-capsule.opening .capsule-chest{animation:none!important}
   .book-page{transition:none!important}
 }
+
+/* V20: exibir as duas cartinhas inteiras, com as proporções originais,
+   sem limitar a altura da imagem nem recortar sua escrita. */
+.capsule-panel{
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+.memory-book{
+  width:min(100%,770px);
+  height:auto;
+  min-height:0;
+  flex:0 0 auto;
+  display:block;
+  overflow:visible;
+  padding:10px 14px 10px 22px;
+}
+.book-page{
+  display:block;
+  width:100%;
+  height:auto;
+  min-height:0;
+}
+.book-page img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:100%;
+  max-height:none;
+  object-fit:contain;
+}
+.capsule-actions{
+  flex:0 0 auto;
+}
+.capsule-zoom-scroll img{
+  width:auto;
+  height:auto;
+  max-width:none;
+  max-height:none;
+  object-fit:contain;
+}
+@media(max-width:600px){
+  .memory-book{
+    width:100%;
+    height:auto;
+    min-height:0;
+    padding:6px 8px 6px 14px;
+  }
+  .book-page img{
+    width:100%;
+    height:auto;
+    max-height:none;
+  }
+}
