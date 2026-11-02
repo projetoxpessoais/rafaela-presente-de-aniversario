@@ -1,145 +1,101 @@
-
 (() => {
- "use strict";
- const $ = id => document.getElementById(id);
- const spots = [
-  [920,704,"#f9a2d1"],[1028,765,"#b6a0f2"],[1161,715,"#f5a9d2"],
-  [1146,803,"#b89ef1"],[1232,820,"#f1a2a8"],[1355,692,"#eab2ff"],
-  [1366,806,"#f4a0bc"],[1530,718,"#f2adbb"],[1503,844,"#bd94dc"],
-  [1613,834,"#e9a0ed"]
- ];
- const entries = [
-  {"title":"Uma pessoa especial","text":"Feliz 18 anos, Rafa!\n\nSabe, existem pessoas que são especiais simplesmente por serem quem são. E você é uma delas!\n\nRespeitosa, legal, inteligente (mais que o alberto eisnteing, inclusive KKKKK), fofa, responsável, forte, habilidosa, divertida, engraçada e dedicada. É tanta qualidade que fica difícil colocar tudo em uma mensagem só!\n\nQue seus 18 anos sejam apenas o começo de uma fase repleta de conquistas, sonhos realizados, muito sucesso e infinitas bênçãos.\n\nQue Deus ilumine seus caminhos, proteja seus passos e permita que você receba tudo de bom e de melhor que Ele tem para oferecer.\n\nQue você nunca perca essa essência tão especial que faz de você quem é.\n\nFeliz aniversário, Rafa! Que a vida te surpreenda das formas mais bonitas!"},
-  {title:"Uma dose de alegria ☀️",text:"Que nunca faltem motivos para rir — inclusive daquelas situações tão absurdas que viram histórias para contar depois!"},
-  {title:"O desejo da estrelinha ⭐",text:"Escolha um desejo em segredo. Não precisa contar para ninguém: algumas coisas bonitas começam assim, bem quietinhas."},
-  {title:"Você merece coisas boas 🌷",text:"Espero que seu aniversário seja leve, divertido e cheio de pequenos momentos felizes. Feliz 18!"},
-  {title:"Cantinho das fotos 📸",text:"Aqui vai uma foto engraçada. Ainda vamos escolher e colocar a imagem especial neste presente.",type:"photo"},
-  {title:"Mais uma lembrança divertida 📷",text:"Espaço reservado para outra foto engraçada, acompanhada de uma legenda criada especialmente para você.",type:"photo"},
-  {title:"Um vídeo surpresa 🎬",text:"Este presente vai guardar o primeiro vídeo especial. Ainda vamos adicionar o arquivo.",type:"video"},
-  {title:"A segunda sessão de cinema 🍿",text:"Mais um vídeo divertido vai aparecer aqui. Ainda vamos escolher o arquivo.",type:"video"},
-  {title:"Missão de aniversário! 🧩",text:"Desafio: pense em três coisas que você quer viver neste novo ano. Pronto! Você concluiu sua primeira missão da fase 18.",type:"game"},
-  {title:"O último presente... 💌",text:"Surpresa! Este quartinho foi preparado para celebrar os seus 18 anos.\n\nQue seu novo ciclo traga boas histórias, descobertas e sorrisos. Feliz aniversário, Rafaela!\n\n[A mensagem final e a assinatura serão personalizadas depois.]",type:"last"}
- ];
- const storeKey="rafaela-presentes-2p5d-v1";
- let opened=new Set(),busy=false,audioCtx=null,musicTimer=null,musicOn=false;
- try{opened=new Set(JSON.parse(localStorage.getItem(storeKey)||"[]").filter(n=>Number.isInteger(n)&&n>=0&&n<10))}catch{}
- const save=()=>{try{localStorage.setItem(storeKey,JSON.stringify([...opened]))}catch{}};
- const unlocked=()=>Array.from({length:9},(_,i)=>i).every(i=>opened.has(i));
- const map=$("giftMap");
- const h=(s)=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
- const darker=color=>color;
- function createGift(i){
-  const n=i+1,x=spots[i][0],y=spots[i][1],color=spots[i][2];
-  const isOpen=opened.has(i),isLocked=i===9&&!unlocked();
-  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
-  g.setAttribute("transform","translate("+x+" "+y+")");
-  g.setAttribute("class","gift"+(isOpen?" opened":"")+(isLocked?" locked":"")+(i===9&&!isLocked?" unlocked":""));
-  g.setAttribute("role","button");g.setAttribute("tabindex","0");
-  g.setAttribute("aria-label",isLocked?"Presente 10, trancado até abrir os outros nove":"Abrir presente "+n);
-  g.setAttribute("data-gift",i);
-  g.innerHTML =
-   '<rect x="-49" y="-60" width="98" height="100" rx="10" fill="transparent"/>'+
-   '<g class="gift-tag"><circle cx="0" cy="-19" r="24" fill="'+color+'" stroke="#fff7f6" stroke-width="5"/>'+
-   '<circle cx="0" cy="-19" r="19" fill="none" stroke="#704072" stroke-width="2"/>'+
-   '<text x="0" y="-11" class="gift-number" font-size="23" text-anchor="middle">'+n+'</text></g>'+
-   '<g class="gift-glitter" fill="#fff0a8"><path d="M-31 -47l5 9 9 5-9 5-5 9-5-9-9-5 9-5z"/><path d="M34 -51l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"/></g>'+
-   '<text x="17" y="-36" class="gift-check" font-size="23" fill="#d9ffe7">✓</text>'+
-   (isLocked?'<text x="13" y="6" font-size="25">🔒</text>':'');
-  g.addEventListener("click",()=>openGift(i));
-  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openGift(i)}});
-  return g;
- }
- function render(){
-  map.replaceChildren(...spots.map((_,i)=>createGift(i)));
-  const count=Array.from(opened).filter(n=>n<9).length;
-  $("progress").textContent=count+" / 9";
-  $("fastGifts").replaceChildren(...spots.map((_,i)=>{
-   const button=document.createElement("button");
-   button.type="button";button.textContent=(opened.has(i)?"✓ ":"🎁 ")+(i+1);
-   button.className=(opened.has(i)?"done ":"")+(i===9&&!unlocked()?"locked":"");
-   button.setAttribute("aria-label","Abrir presente "+(i+1));
-   button.onclick=()=>openGift(i);
-   return button;
-  }));
-  $("secretStatus").textContent=unlocked()?"✨ O presente 10 foi desbloqueado!":"🔒 O presente 10 abre depois dos outros nove.";
- }
- const Ctx=window.AudioContext||window.webkitAudioContext;
- function tone(freq,duration=.16,volume=.025){
-  if(!musicOn||!Ctx)return;
-  try{
-   if(!audioCtx)audioCtx=new Ctx();
-   if(audioCtx.state==="suspended")audioCtx.resume();
-   const now=audioCtx.currentTime,o=audioCtx.createOscillator(),gain=audioCtx.createGain();
-   o.type="sine";o.frequency.value=freq;
-   gain.gain.setValueAtTime(Math.max(.0001,volume),now);
-   gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
-   o.connect(gain);gain.connect(audioCtx.destination);
-   o.start(now);o.stop(now+duration);
-  }catch{}
- }
- const tune=[523,587,659,0,659,587,523,392,440,523,587,0,523,440,392,0];
- let noteIndex=0;
- function setAudio(on){
-  musicOn=on;
-  $("sound").textContent=on?"🔊":"🔇";
-  $("sound").setAttribute("aria-label",on?"Desligar música":"Ligar música");
-  if(musicTimer){clearInterval(musicTimer);musicTimer=null}
-  if(on){
-   tone(523,.14);
-   musicTimer=setInterval(()=>{
-    const f=tune[noteIndex++%tune.length];if(f)tone(f,.3,.011);
-   },470);
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const gift = $("singleGift");
+  const welcome = $("welcome");
+  const modal = $("modal");
+  const message = "Feliz aniversário, Rafa!\n\n18 aninhos, hein? Agora é oficialmente adulta! Dizem que, quando a gente faz 18 anos, começa a entender melhor a vida. Mas, se você descobrir como funciona, depois me explica, porque até hoje ninguém me passou esse manual. KKKKK\n\nRafa, existem pessoas que são especiais não pelo que têm ou pelo que conquistam, mas simplesmente por serem quem são. E você é uma dessas pessoas.\n\nVocê é respeitosa, legal, fofa, responsável, habilidosa, divertida, engraçada, dedicada e inteligente. Aliás, inteligente é pouco! Bem mais que o alberto eisnteing, inclusive. KKKKK\n\nMas sabe o que realmente torna você especial? É que suas qualidades vão muito além dessas palavras.\n\nAdmiro sua força para enfrentar as dificuldades, sua dedicação quando quer alcançar alguma coisa e, principalmente, o jeito como você trata as pessoas. São atitudes que dizem muito sobre quem você é.\n\nE tem uma coisa que eu gostaria muito que você nunca esquecesse: não mude quem você é para tentar se encaixar onde quer que seja.\n\nNunca pense que precisa deixar de ser você mesma para conquistar a consideração ou a amizade de alguém. Seu valor não diminui porque alguém não consegue enxergá-lo. Você merece estar perto de pessoas que reconheçam suas qualidades, respeitem seu jeito e gostem de você exatamente como é.\n\nSer forte não significa que você precise acertar sempre, nem que todos os dias serão fáceis. Significa continuar seguindo em frente, aprendendo, crescendo e descobrindo tudo aquilo de que você é capaz.\n\nE eu espero que você nunca duvide dessa capacidade.\n\nQue seus 18 anos sejam o começo de uma fase maravilhosa, repleta de conquistas, sonhos realizados, muitas bênçãos, felicidade e muito, muito sucesso.\n\nQue Deus ilumine seus caminhos, proteja seus passos e coloque coisas boas em sua vida. Que você receba tudo de bom e de melhor que Ele possa oferecer, porque você merece viver coisas extraordinárias.\n\nQue não faltem motivos para sorrir, oportunidades para crescer, pessoas verdadeiras para compartilhar suas conquistas e coragem para correr atrás de tudo aquilo que deseja.\n\nE, acima de tudo, que você nunca perca essa essência tão especial que faz de você a Rafa.\n\nFeliz 18 anos! Que a vida seja generosa com você e que seu futuro seja ainda mais bonito do que todos os sonhos que você carrega.\n\nNunca se esqueça: você é muito mais especial do que imagina.";
+  const key = "rafa-presente-unico-v1";
+  let busy = false;
+  let read = false;
+  let audioCtx = null, musicTimer = null, musicOn = false, noteIndex = 0;
+  try { read = localStorage.getItem(key) === "aberto"; } catch {}
+
+  function render() {
+    $("progress").textContent = read ? "1 / 1" : "0 / 1";
+    gift.classList.toggle("opened", read);
+    $("giftHint").textContent = read ? "Ler novamente" : "Clique para abrir";
   }
- }
- async function openGift(i){
-  if(busy || $("welcome").hidden===false || !$("modal").hidden)return;
-  if(i===9&&!unlocked()){
-   $("toast").textContent="🔒 Primeiro abra os outros nove presentinhos!";
-   $("toast").hidden=false;
-   setTimeout(()=>$("toast").hidden=true,2200);
-   tone(247,.17,.03);
-   return;
+  const Audio = window.AudioContext || window.webkitAudioContext;
+  function tone(freq, duration = .16, volume = .018) {
+    if (!musicOn || !Audio) return;
+    try {
+      if (!audioCtx) audioCtx = new Audio();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(Math.max(.0001, volume), now);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + duration);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(now); osc.stop(now + duration);
+    } catch {}
   }
-  const prevUnlock=unlocked();
-  busy=true;const selected=map.querySelector('[data-gift="'+i+'"]');
-  if(selected){selected.classList.remove("opened");selected.classList.add("opening")}
-  tone(494,.15);
-  await new Promise(resolve=>setTimeout(resolve,1150));
-  opened.add(i);save();render();
-  busy=false;showModal(i);
-  if(i!==9&&!prevUnlock&&unlocked())$("secretStatus").textContent="✨ Você desbloqueou o presente 10!";
- }
- function showModal(i){
-  const item=entries[i];$("modalTitle").textContent=item.title;
-  $("modalText").textContent=item.text;
-  const type=item.type;
-  $("placeholder").hidden=!(type==="photo"||type==="video");
-  $("placeholder").textContent=type==="photo"?"📸 Espaço para a foto":type==="video"?"🎬 Espaço para o vídeo":"";
-  $("modal").hidden=false;
-  $("closeModal").focus();
-  tone(659,.19);setTimeout(()=>tone(784,.22),180);
- }
- function dismissModal(){
-  $("modal").hidden=true;
-  $("toast").hidden=true;
- }
- $("start").addEventListener("click",()=>{
-  $("welcome").hidden=true;render();setAudio(true);
- });
- $("closeModal").addEventListener("click",dismissModal);
- $("modal").addEventListener("click",e=>{if(e.target===$("modal"))dismissModal()});
- $("sound").addEventListener("click",()=>setAudio(!musicOn));
- $("reset").addEventListener("click",()=>{
-  if(confirm("Quer recomeçar e fechar todos os presentes?")){
-   opened.clear();save();dismissModal();render();
+  const melody = [523,587,659,0,659,587,523,392,440,523,587,0,523,440,392,0];
+  function music(on) {
+    musicOn = on;
+    $("sound").textContent = on ? "♪" : "♫";
+    $("sound").setAttribute("aria-label", on ? "Desligar música" : "Ligar música");
+    if (musicTimer) { clearInterval(musicTimer); musicTimer = null; }
+    if (on) {
+      tone(523,.12);
+      musicTimer = setInterval(() => {
+        const f = melody[noteIndex++ % melody.length];
+        if (f) tone(f,.27,.010);
+      }, 470);
+    }
   }
- });
- document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"&&!$("modal").hidden)dismissModal();
- });
- document.addEventListener("visibilitychange",()=>{
-  if(document.hidden&&audioCtx&&audioCtx.state==="running")audioCtx.suspend();
-  else if(!document.hidden&&musicOn&&audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
- });
- render();
+  function close() {
+    modal.hidden = true;
+    gift.focus();
+  }
+  function openGift() {
+    if (busy || !welcome.hidden || !modal.hidden || !$("memoryModal").hidden) return;
+    busy = true;
+    gift.classList.add("opening");
+    tone(659,.2);
+    setTimeout(() => {
+      gift.classList.remove("opening");
+      read = true;
+      try { localStorage.setItem(key, "aberto"); } catch {}
+      render();
+      $("modalTitle").textContent = "Uma mensagem para a Rafa";
+      $("modalText").textContent = message;
+      $("placeholder").hidden = true;
+      modal.hidden = false;
+      $("closeModal").focus();
+      busy = false;
+      tone(784,.25);
+    }, 650);
+  }
+  gift.addEventListener("click", openGift);
+  $("openGiftBtn").addEventListener("click", openGift);
+  $("start").addEventListener("click", () => {
+    welcome.hidden = true;
+    music(true);
+  });
+  $("closeModal").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  $("sound").addEventListener("click", () => music(!musicOn));
+  $("reset").addEventListener("click", () => {
+    if (!confirm("Quer fechar o presente e recomeçar a surpresa?")) return;
+    read = false;
+    try { localStorage.removeItem(key); } catch {}
+    modal.hidden = true;
+    render();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !modal.hidden) close();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!audioCtx) return;
+    if (document.hidden && audioCtx.state === "running") audioCtx.suspend();
+    else if (!document.hidden && musicOn && audioCtx.state === "suspended") audioCtx.resume();
+  });
+  window.addEventListener("pagehide", () => {
+    if (musicTimer) clearInterval(musicTimer);
+  }, {once:true});
+  render();
 })();
