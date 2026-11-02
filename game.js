@@ -9,7 +9,7 @@
   [1613,834,"#e9a0ed"]
  ];
  const entries = [
-  {"title":"Um carinho pra Rafa 🎀","text":"Rafa, você é daquelas pessoas que conseguem reunir inteligência, força, responsabilidade e um jeitinho fofo que é só seu.\n\nE quando digo inteligente, é inteligente MESMO! Mais que o alberto eisnteing! KKKKK 🤓💗"},
+  {"title":"Uma pessoa especial","text":"Feliz 18 anos, Rafa!\n\nSabe, existem pessoas que são especiais simplesmente por serem quem são. E você é uma delas!\n\nRespeitosa, legal, inteligente (mais que o alberto eisnteing, inclusive KKKKK), fofa, responsável, forte, habilidosa, divertida, engraçada e dedicada. É tanta qualidade que fica difícil colocar tudo em uma mensagem só!\n\nQue seus 18 anos sejam apenas o começo de uma fase repleta de conquistas, sonhos realizados, muito sucesso e infinitas bênçãos.\n\nQue Deus ilumine seus caminhos, proteja seus passos e permita que você receba tudo de bom e de melhor que Ele tem para oferecer.\n\nQue você nunca perca essa essência tão especial que faz de você quem é.\n\nFeliz aniversário, Rafa! Que a vida te surpreenda das formas mais bonitas!"},
   {title:"Uma dose de alegria ☀️",text:"Que nunca faltem motivos para rir — inclusive daquelas situações tão absurdas que viram histórias para contar depois!"},
   {title:"O desejo da estrelinha ⭐",text:"Escolha um desejo em segredo. Não precisa contar para ninguém: algumas coisas bonitas começam assim, bem quietinhas."},
   {title:"Você merece coisas boas 🌷",text:"Espero que seu aniversário seja leve, divertido e cheio de pequenos momentos felizes. Feliz 18!"},
