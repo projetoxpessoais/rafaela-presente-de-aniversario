@@ -9,7 +9,7 @@
   [1613,834,"#e9a0ed"]
  ];
  const entries = [
-  {title:"Um novo nível desbloqueado! 🎮",text:"Parabéns pelos seus 18 anos, Rafaela! Que esse novo nível da vida tenha aventuras bonitas, amizades sinceras e muitas conquistas."},
+  {title:"Um carinho para você 🎀",text:"Feliz 18 anos, Rafaela! 💗\n\nQue essa nova fase seja cheia de dias leves, risadas sinceras, amizades bonitas e sonhos que vão ganhando vida, um de cada vez.\n\nQue você encontre motivos para sorrir até nos dias mais comuns e guarde lembranças que aqueçam o coração.\n\nHoje é o seu dia. Que ele seja tão especial quanto as coisas boas que ainda estão por vir! ✨"},
   {title:"Uma dose de alegria ☀️",text:"Que nunca faltem motivos para rir — inclusive daquelas situações tão absurdas que viram histórias para contar depois!"},
   {title:"O desejo da estrelinha ⭐",text:"Escolha um desejo em segredo. Não precisa contar para ninguém: algumas coisas bonitas começam assim, bem quietinhas."},
   {title:"Você merece coisas boas 🌷",text:"Espero que seu aniversário seja leve, divertido e cheio de pequenos momentos felizes. Feliz 18!"},
