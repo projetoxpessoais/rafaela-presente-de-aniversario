@@ -3,10 +3,10 @@
  "use strict";
  const $ = id => document.getElementById(id);
  const spots = [
-  [170,577,"#f9a2d1"],[340,521,"#8fd4e7"],[497,378,"#b9a2ee"],
-  [483,610,"#f6c15f"],[695,609,"#ed8dbb"],[832,605,"#b59cf2"],
-  [939,548,"#98d9a8"],[1054,484,"#89c5f1"],[956,404,"#f1ad5d"],
-  [1050,605,"#ab84e4"]
+  [920,704,"#f9a2d1"],[1028,765,"#b6a0f2"],[1161,715,"#f5a9d2"],
+  [1146,803,"#b89ef1"],[1232,820,"#f1a2a8"],[1355,692,"#eab2ff"],
+  [1366,806,"#f4a0bc"],[1530,718,"#f2adbb"],[1503,844,"#bd94dc"],
+  [1613,834,"#e9a0ed"]
  ];
  const entries = [
   {title:"Um novo nível desbloqueado! 🎮",text:"Parabéns pelos seus 18 anos, Rafaela! Que esse novo nível da vida tenha aventuras bonitas, amizades sinceras e muitas conquistas."},
@@ -37,33 +37,16 @@
   g.setAttribute("role","button");g.setAttribute("tabindex","0");
   g.setAttribute("aria-label",isLocked?"Presente 10, trancado até abrir os outros nove":"Abrir presente "+n);
   g.setAttribute("data-gift",i);
-  g.innerHTML=
-  '<rect x="-56" y="-70" width="112" height="113" fill="transparent"/>'+
-  '<g class="gift-body">'+
-  '<path d="M-30 -20 L9 -34 L37 -20 L-2 -5Z" fill="#fff1f6" stroke="#654466" stroke-width="3"/>'+
-  '<path d="M-30 -20L-2 -5L-2 30L-30 15Z" fill="'+color+'" stroke="#654466" stroke-width="3"/>'+
-  '<path d="M-2 -5L37 -20L37 16L-2 30Z" fill="'+darker(color)+'" stroke="#654466" stroke-width="3"/>'+
-  '<path d="M-13 -13L-4 -7L-4 29L-13 24Z" fill="#ffe4a4"/>'+
-  '<path d="M15 -29L24 -24L24 22L15 25Z" fill="#fff0bd"/>'+
-  '<circle cx="5" cy="6" r="17" fill="#fff7ee" stroke="#a875ab" stroke-width="3"/>'+
-  '<text x="5" y="14" class="gift-number">'+n+'</text>'+
-  '</g>'+
-  '<g class="gift-lid">'+
-  '<path d="M-37 -26L8 -43L47 -27L0 -9Z" fill="'+color+'" stroke="#58375a" stroke-width="4"/>'+
-  '<path d="M-37 -26L0 -9L0 -1L-37 -18Z" fill="#ffe2f3" stroke="#674466" stroke-width="3"/>'+
-  '<path d="M0 -9L47 -27L47 -19L0 -1Z" fill="#f9d1f1" stroke="#674466" stroke-width="3"/>'+
-  '<path d="M-20 -32L-10 -36L29 -16L20 -12Z" fill="#fff2bb"/>'+
-  '<path d="M4 -42L15 -39L-15 -18L-26 -23Z" fill="#fff2bb"/>'+
-  '<path d="M-4 -40Q-35 -73 -36 -46Q-36 -36 -4 -35Z" fill="#ffe5af" stroke="#a76a84" stroke-width="4"/>'+
-  '<path d="M-4 -40Q20 -76 26 -47Q27 -36 -4 -35Z" fill="#ffe5af" stroke="#a76a84" stroke-width="4"/>'+
-  '</g>'+
-  '<g class="gift-sparkle" fill="#fff3a6"><path d="M-39 -57l5 14 14 5-14 5-5 14-5-14-14-5 14-5z"/><path d="M39 -67l4 11 11 4-11 4-4 11-4-11-11-4 11-4z"/></g>'+
-  '<text class="gift-done" x="42" y="-47" font-size="23" fill="#ddffce" stroke="#40744e" stroke-width="1.2">✓</text>'+
-  '<text class="lock-label" x="-2" y="-43" font-size="33" text-anchor="middle">🔒</text>';
+  g.innerHTML =
+   '<rect x="-49" y="-60" width="98" height="100" rx="10" fill="transparent"/>'+
+   '<g class="gift-tag"><circle cx="0" cy="-19" r="24" fill="'+color+'" stroke="#fff7f6" stroke-width="5"/>'+
+   '<circle cx="0" cy="-19" r="19" fill="none" stroke="#704072" stroke-width="2"/>'+
+   '<text x="0" y="-11" class="gift-number" font-size="23" text-anchor="middle">'+n+'</text></g>'+
+   '<g class="gift-glitter" fill="#fff0a8"><path d="M-31 -47l5 9 9 5-9 5-5 9-5-9-9-5 9-5z"/><path d="M34 -51l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"/></g>'+
+   '<text x="17" y="-36" class="gift-check" font-size="23" fill="#d9ffe7">✓</text>'+
+   (isLocked?'<text x="13" y="6" font-size="25">🔒</text>':'');
   g.addEventListener("click",()=>openGift(i));
-  g.addEventListener("keydown",e=>{
-   if(e.key==="Enter"||e.key===" "){e.preventDefault();openGift(i)}
-  });
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openGift(i)}});
   return g;
  }
  function render(){
