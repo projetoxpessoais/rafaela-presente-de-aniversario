@@ -8,7 +8,7 @@
 <button id="skip" class="hide">Pular introdução »</button>
 <div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Começar surpresa</button><p>Use as setas, WASD ou os botões na tela.</p></div></div>
 <div id="modal" class="overlay hide"><div class="panel"><h2 id="heading">🎀 Presente</h2><div id="letter" class="letter"></div><button id="close">Continuar explorando ♡</button></div></div>
-</main><script>
+</main><script src="rafaela-sprite.js?v=5"></script><script>
 (()=>{
 const canvas=document.getElementById("scene"),ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=false;
 const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[305,352],[320,205]];
@@ -85,35 +85,7 @@ function corridor(p,t){
   rect(263,308,114,12,"#b0a28e");rect(273,311,94,5,"#d4c6ae");
   word(p<.6?"Um corredor bem comum...":p<.77?"A porta está abrindo...":"Tem algo especial lá dentro!",320,47,17,"#725d66");
 }
-function character(x,y,back=false,walking=false,t=0){
-  // Sprite 40x62: cabelo castanho ondulado, óculos, camisa branca, colete escuro.
-  // x = centro; y = sola dos sapatos.
-  const step=walking?Math.round(Math.sin(t/150)*3):0;
-  const r=(ox,oy,w,h,c)=>rect(x+ox,y+oy,w,h,c);
-  r(-16,-59,32,33,"#352a35");
-  r(-19,-50,6,24,"#44303a");r(13,-52,6,25,"#44303a");
-  r(-13,-61,25,5,"#4d383f");
-  r(-15,-56,6,13,"#705148");r(7,-57,5,13,"#62473f");
-  r(-12,-52,24,22,back?"#4b343b":"#d7ad93");
-  if(!back){
-    r(-11,-39,10,3,"#342c3e");r(2,-39,10,3,"#342c3e");
-    r(-12,-43,12,3,"#272937");r(1,-43,12,3,"#272937");
-    r(-12,-41,3,9,"#272937");r(-2,-41,3,9,"#272937");
-    r(2,-41,3,9,"#272937");r(10,-41,3,9,"#272937");r(-1,-41,3,2,"#272937");
-    r(-4,-33,8,2,"#ba7086");r(-8,-52,16,4,"#49353d");
-  }else{
-    r(-11,-46,5,17,"#66443f");r(5,-48,6,17,"#6d4b44");
-    r(-7,-55,7,4,"#876455");
-  }
-  // Camisa branca com colete grafite e calça escura.
-  r(-12,-29,24,23,"#f2eee9");
-  r(-15,-27,7,20,"#ece7e2");r(8,-27,7,20,"#ece7e2");
-  r(-8,-28,7,20,"#2d303a");r(1,-28,7,20,"#2d303a");
-  r(-3,-24,6,11,"#f8f4ef");
-  r(-7,-9,14,5,"#2e2c3d");
-  r(-12,-5+step,10,5-step,"#2e2e40");r(2,-5-step,10,5+step,"#2e2e40");
-  r(-13,-1+step,12,3,"#f4e9eb");r(2,-1-step,12,3,"#f4e9eb");
-}
+function character(x,y,back=false,walking=false,t=0){window.drawRafaelaSprite(ctx,x,y,back,walking,t)}
 function backAvatar(x,y,t){character(x,y,true,(t-begin)/5600<.62,t)}
 function avatar(){character(position.x,position.y,false,false,0)}
 function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
@@ -123,7 +95,7 @@ function openGift(){if(mode!=="play"||near<0)return;if(near===9&&!unlock()){tone
 function startIntro(){mode="intro";begin=performance.now();$("start").classList.add("hide");$("skip").classList.remove("hide")}
 function play(){mode="play";position={x:320,y:452};$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
 function frame(t){const dt=Math.min((t-last)/1000||.016,.05);last=t;if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}if(mode==="intro"){const p=(t-begin)/5600;if(p<.85){corridor(p,t);position.x=320;if(p<.62){position.y=449-Math.min(p/.62,1)*114;backAvatar(position.x,position.y,t)}else if(p<.79){position.y=335;backAvatar(position.x,position.y,t);if(p<.68)word("clic!",320,157,14,"#695366")}else{position.y=335-Math.min((p-.79)/.06,1)*26;backAvatar(position.x,position.y,t)}}else{room(t);gifts.forEach((v,i)=>gift(...v,i,t));position.x=320;position.y=452;const alpha=Math.max(0,Math.min(1,(1-p)/.15));ctx.fillStyle="rgba(255,241,250,"+alpha*.5+")";ctx.fillRect(0,0,640,480)} if(p>=1)play()}else if(mode==="play"){let dx=Number(keys.has("right"))-Number(keys.has("left")),dy=Number(keys.has("down"))-Number(keys.has("up"));const d=Math.hypot(dx,dy)||1;position.x=Math.max(30,Math.min(605,position.x+dx/d*145*dt));position.y=Math.max(96,Math.min(445,position.y+dy/d*145*dt));near=-1;let closest=62;gifts.forEach(([x,y],i)=>{let dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});$("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";$("action").disabled=near<0; if(sound&&t>nextNote){const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];if(n)tone(n,.3);nextNote=t+490}}
-if(mode==="play" || mode==="intro"&&(t-begin)/5600>=.85){avatar()}word("v4 • corredor",564,470,11,"#60436f");requestAnimationFrame(frame)}
+if(mode==="play" || mode==="intro"&&(t-begin)/5600>=.85){avatar()}word("v5 • sprite novo",564,470,11,"#60436f");requestAnimationFrame(frame)}
 $("begin").onclick=startIntro;$("replay").onclick=()=>{keys.clear();$("controls").classList.add("hide");$("hud").classList.add("hide");startIntro()};$("skip").onclick=play;$("action").onclick=openGift;$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
 $("sound").onclick=()=>{sound=!sound;$("sound").textContent=sound?"🔊 Som":"🔇 Som";if(sound)tone(523)};
 const map={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
