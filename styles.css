@@ -637,3 +637,11 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
     max-height:none;
   }
 }
+
+/* Assinatura discreta exibida logo na tela inicial. */
+.welcome-signature{
+  margin:18px 0 0!important;
+  font:italic 700 1.05rem Georgia,serif!important;
+  color:#976287;
+  letter-spacing:.025em;
+}
