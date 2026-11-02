@@ -37,34 +37,93 @@ rect(444,150,175,100,"#bd81ad");rect(454,158,155,73,"#fff0f7");rect(468,166,100,
 rect(26,135,142,100,"#c38eb9");rect(35,143,125,82,"#fff2fa");for(let x=46;x<150;x+=33){rect(x,151,22,32,"#dba6da");rect(x,192,22,24,"#b6d5cc")}
 rect(337,327,157,70,"#f6dce8");rect(346,336,139,52,"#e2a8ce");word("♡",414,374,37,"#fff2fa");
 rect(35,350,140,94,"#f4e1e8");rect(46,359,118,76,"#cda4d8");word("♡",104,408,43,"#fff4fa");
-rect(286,391,70,70,"#d593b8");rect(295,400,52,61,"#f8cddd");word("🚪",322,442,30);
+// Entrada do quarto na borda inferior, atrás da personagem.
+rect(275,397,90,83,"#a679a1");rect(281,402,78,78,"#f1cde7");
+rect(289,410,62,70,"#8b6495");rect(294,415,52,65,"#c8a5d4");
+rect(279,470,82,10,"#fff1fa");word("ENTRADA",320,405,11,"#66466d");
 for(let x=28;x<640;x+=59){rect(x,14+Math.sin(t/700+x)*3,6,6,"#fff0b4")}
 }
 function gift(x,y,i,t){const done=opened.has(i),locked=i===9&&!unlock(),w=done?0:Math.sin(t/350+i)*2;y+=w;rect(x-17,y-12,34,30,["#ff93c4","#c0a7ee","#9adcc8","#f6c68e"][i%4]);rect(x-4,y-12,8,30,"#fff3b9");rect(x-17,y-3,34,6,"#fff3b9");rect(x-20,y-17,40,8,"#ffecf7");rect(x-12,y-26,11,9,"#fff3b9");rect(x+1,y-26,11,9,"#fff3b9");word(String(i+1),x,y+33,13,"#543657");if(locked)word("🔒",x,y+6,19);if(done)word("✓",x+21,y-20,18,"#fff9ad")}
 function corridor(p,t){
-rect(0,0,640,480,"#e8ddcd");rect(0,0,640,270,"#f4eee7");
-rect(0,260,640,220,"#bca28c");
-for(let i=0;i<480;i+=32){rect(0,270+i,640,2,"#9e836d");for(let x=(i%64?0:35);x<640;x+=80)rect(x,270+i,2,30,"#a98d79")}
-rect(0,249,640,12,"#faf9f6");rect(0,258,640,8,"#b8a797");
-rect(100,82,104,89,"#c3af9a");rect(108,90,88,73,"#fffdf8");rect(122,104,60,50,"#9dc1a5");rect(134,117,35,25,"#d9d4ad");
-rect(451,102,105,83,"#c5ad9b");rect(458,109,91,69,"#fffdf8");rect(475,119,57,48,"#d4afbc");word("♡",505,152,28,"#9d8397");
-rect(230,56,180,207,"#a78d7b");rect(240,64,160,192,"#f7f4ee");
-const opening=Math.max(0,Math.min(1,(p-.64)/.16));
-rect(247,71,146,181,"#6c5367");if(opening>0){rect(247,71,146,181,"#dfa8cf");rect(247,71,146,23,"#eec6e1");rect(247,94,146,158,"#b188b9");word("✦",321,148,25,"#fff3b7")}
-rect(247+opening*128,71,146*(1-opening),181,"#cda99a");rect(248+opening*128,77,Math.max(0,136*(1-opening)),170,"#ddc2aa");
-if(opening<.9)rect(367+opening*18,160,7,8,"#e9c989");
-word(p<.61?"Uma casa tranquila...":p<.73?"A porta se abre...":"Uma surpresa espera do outro lado ♡",320,34,18,"#6c506c");
+  // Hall de uma casa comum: porta proporcional à personagem.
+  rect(0,0,640,480,"#e9e1d5");
+  rect(0,0,640,290,"#eee8df");
+  rect(0,290,640,190,"#b99e86");
+  for(let y=302;y<480;y+=32){
+    rect(0,y,640,3,"#a58c76");
+    for(let x=y%64===14?0:64;x<640;x+=128)rect(x,y+3,3,29,"#ad917c");
+  }
+  rect(0,283,640,9,"#fffdf7");rect(0,292,640,6,"#c8baab");
+  // Quadros pequenos e um aparador discreto.
+  rect(91,147,72,64,"#b59a80");rect(97,153,60,52,"#fff8e8");
+  rect(104,161,46,38,"#c4d7c7");rect(109,180,37,15,"#8bb69d");
+  rect(482,155,66,59,"#b49b87");rect(488,161,54,47,"#fff8eb");
+  rect(493,165,44,39,"#d5c5bb");word("✿",515,194,23,"#8e9d83");
+  rect(448,267,122,8,"#a58d7a");rect(464,275,8,33,"#a58d7a");rect(546,275,8,33,"#a58d7a");
+  rect(463,253,22,14,"#899d84");rect(470,244,8,11,"#79956e");
+  // Sombra da entrada e moldura: 82px de largura, 124px de altura.
+  rect(278,174,84,130,"#b59e8c");
+  rect(284,180,72,119,"#fefbf1");
+  rect(289,185,62,111,"#725c69");
+  const raw=Math.max(0,Math.min(1,(p-.62)/.18));
+  const opening=raw*raw*(3-2*raw);
+  if(opening>0){
+    rect(290,185,61,110,"#d99fcc");
+    rect(293,188,55,103,"#a379b1");
+    rect(300,203,41,78,"#debbdc");
+    if(opening>.45){word("✦",318,230,15,"#fff4b5");word("✦",333,257,11,"#fff4b5")}
+  }
+  // A folha gira sobre a dobradiça, em vez de escorregar pela parede.
+  const doorW=Math.max(3,61*(1-opening));
+  rect(290,185,doorW,110,"#b58e77");
+  rect(294,190,Math.max(0,doorW-8),99,"#dac1a8");
+  if(opening<.8){
+    rect(290+doorW-13,236,5,6,"#e8cc8f");
+    rect(290+doorW-15,242,9,2,"#9d7b68");
+  }
+  // Pequeno tapete: pista visual da altura real da porta.
+  rect(263,308,114,12,"#b0a28e");rect(273,311,94,5,"#d4c6ae");
+  word(p<.6?"Um corredor bem comum...":p<.77?"A porta está abrindo...":"Tem algo especial lá dentro!",320,47,17,"#725d66");
 }
-function backAvatar(x,y,t){const walking=(t-begin)/5600<.61;rect(x-12,y-27,24,30,"#4a3438");rect(x-13,y-17,26,25,"#503a40");rect(x-10,y-3,20,17,"#ece7e3");rect(x-7,y+4,14,11,"#2e2938");rect(x-11,y+12,9,11+(walking?Math.sin(t/125)*3:0),"#373142");rect(x+2,y+12,9,11-(walking?Math.sin(t/125)*3:0),"#373142")}
-function avatar(){const {x,y}=position;rect(x-12,y-23,24,32,"#403340");rect(x-11,y-29,22,22,"#4e3535");rect(x-10,y-21,20,18,"#c99b7d");rect(x-11,y-20,10,7,"#282a38");rect(x+2,y-20,10,7,"#282a38");rect(x-10,y-22,22,3,"#fff1eb");rect(x-12,y-3,24,14,"#f5eee9");rect(x-10,y+1,20,5,"#292b38");rect(x-10,y+11,8,6,"#28263c");rect(x+2,y+11,8,6,"#28263c")}
+function character(x,y,back=false,walking=false,t=0){
+  // Sprite 40x62: cabelo castanho ondulado, óculos, camisa branca, colete escuro.
+  // x = centro; y = sola dos sapatos.
+  const step=walking?Math.round(Math.sin(t/150)*3):0;
+  const r=(ox,oy,w,h,c)=>rect(x+ox,y+oy,w,h,c);
+  r(-16,-59,32,33,"#352a35");
+  r(-19,-50,6,24,"#44303a");r(13,-52,6,25,"#44303a");
+  r(-13,-61,25,5,"#4d383f");
+  r(-15,-56,6,13,"#705148");r(7,-57,5,13,"#62473f");
+  r(-12,-52,24,22,back?"#4b343b":"#d7ad93");
+  if(!back){
+    r(-11,-39,10,3,"#342c3e");r(2,-39,10,3,"#342c3e");
+    r(-12,-43,12,3,"#272937");r(1,-43,12,3,"#272937");
+    r(-12,-41,3,9,"#272937");r(-2,-41,3,9,"#272937");
+    r(2,-41,3,9,"#272937");r(10,-41,3,9,"#272937");r(-1,-41,3,2,"#272937");
+    r(-4,-33,8,2,"#ba7086");r(-8,-52,16,4,"#49353d");
+  }else{
+    r(-11,-46,5,17,"#66443f");r(5,-48,6,17,"#6d4b44");
+    r(-7,-55,7,4,"#876455");
+  }
+  // Camisa branca com colete grafite e calça escura.
+  r(-12,-29,24,23,"#f2eee9");
+  r(-15,-27,7,20,"#ece7e2");r(8,-27,7,20,"#ece7e2");
+  r(-8,-28,7,20,"#2d303a");r(1,-28,7,20,"#2d303a");
+  r(-3,-24,6,11,"#f8f4ef");
+  r(-7,-9,14,5,"#2e2c3d");
+  r(-12,-5+step,10,5-step,"#2e2e40");r(2,-5-step,10,5+step,"#2e2e40");
+  r(-13,-1+step,12,3,"#f4e9eb");r(2,-1-step,12,3,"#f4e9eb");
+}
+function backAvatar(x,y,t){character(x,y,true,(t-begin)/5600<.62,t)}
+function avatar(){character(position.x,position.y,false,false,0)}
 function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
 function tone(hz,seconds=.2){if(!sound)return;try{ac??=new AudioContext();if(ac.state==="suspended")ac.resume();const o=ac.createOscillator(),v=ac.createGain();o.type="sine";o.frequency.value=hz;v.gain.setValueAtTime(.025,ac.currentTime);v.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+seconds);o.connect(v).connect(ac.destination);o.start();o.stop(ac.currentTime+seconds)}catch{}}
 function refresh(){$("count").textContent="🎁 "+Array.from(opened).filter(i=>i<9).length+"/9";}
 function openGift(){if(mode!=="play"||near<0)return;if(near===9&&!unlock()){tone(210);return}opened.add(near);save();refresh();keys.clear();mode="modal";$("heading").textContent=near===9?"💌 Última surpresa":"🎀 Presente "+(near+1);$("letter").textContent=wishes[near];$("modal").classList.remove("hide");tone(523);setTimeout(()=>tone(659),130)}
 function startIntro(){mode="intro";begin=performance.now();$("start").classList.add("hide");$("skip").classList.remove("hide")}
-function play(){mode="play";position={x:320,y:444};$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
-function frame(t){const dt=Math.min((t-last)/1000||.016,.05);last=t;if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}if(mode==="intro"){const p=(t-begin)/5600;if(p<.86){corridor(p,t);if(p<.61){position.x=320;position.y=399-Math.min(p/.61,1)*165;backAvatar(position.x,position.y,t)}else if(p<.73){backAvatar(320,234,t);word("CLIC!",320,179,15,"#6c4b60")}else{backAvatar(320,234-(p-.73)/.13*42,t)} }else{room(t);gifts.forEach((v,i)=>gift(...v,i,t));position.x=320;position.y=444;rect(0,0,640,480,"#f8eaf0"+(Math.round((1-(p-.86)/.14)*130)).toString(16).padStart(2,"0"))}if(p>=1)play()}else if(mode==="play"){let dx=Number(keys.has("right"))-Number(keys.has("left")),dy=Number(keys.has("down"))-Number(keys.has("up"));const d=Math.hypot(dx,dy)||1;position.x=Math.max(30,Math.min(605,position.x+dx/d*145*dt));position.y=Math.max(96,Math.min(445,position.y+dy/d*145*dt));near=-1;let closest=62;gifts.forEach(([x,y],i)=>{let dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});$("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";$("action").disabled=near<0; if(sound&&t>nextNote){const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];if(n)tone(n,.3);nextNote=t+490}}
-if(mode==="play" || mode==="intro"&&(t-begin)/5600>=.86){avatar()}word("v3 • corredor",564,470,11,"#60436f");requestAnimationFrame(frame)}
+function play(){mode="play";position={x:320,y:452};$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
+function frame(t){const dt=Math.min((t-last)/1000||.016,.05);last=t;if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}if(mode==="intro"){const p=(t-begin)/5600;if(p<.85){corridor(p,t);position.x=320;if(p<.62){position.y=449-Math.min(p/.62,1)*114;backAvatar(position.x,position.y,t)}else if(p<.79){position.y=335;backAvatar(position.x,position.y,t);if(p<.68)word("clic!",320,157,14,"#695366")}else{position.y=335-Math.min((p-.79)/.06,1)*26;backAvatar(position.x,position.y,t)}}else{room(t);gifts.forEach((v,i)=>gift(...v,i,t));position.x=320;position.y=452;const alpha=Math.max(0,Math.min(1,(1-p)/.15));ctx.fillStyle="rgba(255,241,250,"+alpha*.5+")";ctx.fillRect(0,0,640,480)} if(p>=1)play()}else if(mode==="play"){let dx=Number(keys.has("right"))-Number(keys.has("left")),dy=Number(keys.has("down"))-Number(keys.has("up"));const d=Math.hypot(dx,dy)||1;position.x=Math.max(30,Math.min(605,position.x+dx/d*145*dt));position.y=Math.max(96,Math.min(445,position.y+dy/d*145*dt));near=-1;let closest=62;gifts.forEach(([x,y],i)=>{let dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});$("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";$("action").disabled=near<0; if(sound&&t>nextNote){const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];if(n)tone(n,.3);nextNote=t+490}}
+if(mode==="play" || mode==="intro"&&(t-begin)/5600>=.85){avatar()}word("v4 • corredor",564,470,11,"#60436f");requestAnimationFrame(frame)}
 $("begin").onclick=startIntro;$("replay").onclick=()=>{keys.clear();$("controls").classList.add("hide");$("hud").classList.add("hide");startIntro()};$("skip").onclick=play;$("action").onclick=openGift;$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
 $("sound").onclick=()=>{sound=!sound;$("sound").textContent=sound?"🔊 Som":"🔇 Som";if(sound)tone(523)};
 const map={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
