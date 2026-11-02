@@ -66,3 +66,34 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
  .scene-container:after{content:"";pointer-events:none;position:absolute;inset:0}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+/* Rafaela 18 anos — galeria de memórias + cenário aprovado */
+.scene { aspect-ratio:1672/941; }
+.gift-map { z-index:2;pointer-events:none; }
+.gift {pointer-events:all;cursor:pointer;}
+.gift:hover .gift-tag,.gift:focus-visible .gift-tag {filter:drop-shadow(0 0 10px #fff9bb);transform:scale(1.14)}
+.gift .gift-tag {transform-origin:center;transition:transform .25s,filter .25s}
+.gift .gift-glitter{opacity:0;transition:opacity .25s;pointer-events:none}
+.gift:hover .gift-glitter,.gift:focus-visible .gift-glitter,.gift.opened .gift-glitter,.gift.opening .gift-glitter{opacity:1}
+.gift.opening .gift-tag{animation:pop-gift .8s ease-in-out}
+.gift.opened .gift-check{opacity:1}
+.gift .gift-check{opacity:0;transition:opacity .2s}
+.gift.locked .gift-tag{filter:grayscale(.7)}
+.gift.unlocked .gift-tag{filter:drop-shadow(0 0 15px #fff4a6)}
+@keyframes pop-gift{0%,100%{transform:scale(1)}35%{transform:scale(1.5) rotate(10deg)}70%{transform:scale(.9) rotate(-6deg)}}
+.memory-map{position:absolute;inset:0;z-index:3;pointer-events:none;}
+.frame-spot{position:absolute;pointer-events:auto;border:3px solid transparent;border-radius:6px;background:transparent;cursor:pointer;padding:0;transition:border-color .2s,box-shadow .2s,transform .2s;}
+.frame-spot:hover,.frame-spot:focus-visible,.frame-spot:active{border-color:#fff0aa;box-shadow:0 0 6px #fff,0 0 19px 7px #ff75cf, inset 0 0 14px #ff7ac999;transform:scale(1.02);z-index:2}
+.frame-spot::after{content:'✧';color:#fff1b0;text-shadow:0 0 8px #fff;position:absolute;top:-15px;right:-12px;font-size:23px;opacity:0;transition:opacity .2s}
+.frame-spot:hover::after,.frame-spot:focus-visible::after,.frame-spot:active::after{opacity:1}
+.tv-spot:hover,.tv-spot:focus-visible{border-color:#c2e2ff;box-shadow:0 0 8px #fff,0 0 21px #92d9fa}
+.memory-shortcuts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.memory-shortcuts button{background:#ffe0f6;color:#633c76;border:2px solid #fff;border-radius:10px;box-shadow:0 3px #93609f;padding:9px 12px;font-weight:800}
+.memory-shortcuts button:hover,.memory-shortcuts button:focus-visible{background:#fff9d2}
+.memory-panel{max-width:min(840px,96vw);padding:22px 20px}
+.memory-panel img{display:block;margin:10px auto;max-width:100%;max-height:62svh;width:auto;height:auto;object-fit:contain;border:5px solid #fff;background:#fff;box-shadow:0 8px 26px #642c6b55;border-radius:9px}
+.memory-panel img[hidden],.memory-panel video[hidden]{display:none}
+.memory-panel video{display:block;margin:12px auto;max-width:100%;max-height:60svh;width:100%;background:#261735;border-radius:10px}
+.memory-footnote{font-size:.86rem!important;margin:10px auto;color:#97608d}
+@media(max-width:640px){.scene-container{overflow-x:auto}.scene{min-width:660px}.memory-shortcuts button{padding:8px 9px;font-size:.84rem}.frame-spot{border-width:2px}.memory-panel{padding:18px 10px}}
+@media(prefers-reduced-motion:reduce){.gift.opening .gift-tag{animation:none}}
