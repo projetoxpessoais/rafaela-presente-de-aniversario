@@ -42,7 +42,36 @@
     if(!active)return;
     active=false;modal.hidden=true;video.pause();video.removeAttribute('src');video.load();
   }
+  // Fotos originais: quadros fotográficos de verdade, sem rostos gerados por IA.
+  // As imagens foram fornecidas pelo usuário e já estão em fotos-familia.js.
+  const photoPanels = [
+    [254,37,252,149,0,"50% 50%"],
+    [835,34,220,160,3,"50% 36%"],
+    [1102,35,176,181,4,"50% 40%"],
+    [253,234,196,139,2,"50% 43%"],
+    [494,261,177,142,1,"50% 35%"],
+    [717,263,227,146,5,"50% 50%"],
+    [984,254,226,150,6,"50% 38%"]
+  ];
+  function putRealPhoto(x,y,w,h,index,position,classname=""){
+    if(!window.RAFAELA_FOTOS?.[index]?.src) return;
+    const img=document.createElement("img");
+    img.className="frame-photo "+classname;
+    img.src=window.RAFAELA_FOTOS[index].src;
+    img.alt="";
+    img.loading="lazy";
+    img.decoding="async";
+    img.draggable=false;
+    Object.assign(img.style,{
+      left:percent(x,1672),top:percent(y,941),
+      width:percent(w,1672),height:percent(h,941),
+      objectPosition:position
+    });
+    map.append(img);
+  }
   coords.forEach(([x,y,w,h,index],i)=>{
+    const frame=photoPanels[i];
+    putRealPhoto(...frame);
     const btn=document.createElement('button');
     btn.type='button';btn.className='frame-spot';btn.setAttribute('aria-label','Ampliar quadro: '+titles[i]);
     btn.title='✨ '+titles[i];
@@ -51,6 +80,8 @@
     const shortcut=document.createElement('button');shortcut.type='button';shortcut.textContent='🖼️ '+(i+1);
     shortcut.title=titles[i];shortcut.setAttribute('aria-label',titles[i]);shortcut.onclick=()=>openMemory(i);shortcuts.append(shortcut);
   });
+  // Miniatura original também na televisão, no lugar da imagem recriada por IA.
+  putRealPhoto(1353,290,256,207,5,"50% 50%","tv-photo");
   const tv=document.createElement('button');tv.type='button';tv.className='frame-spot tv-spot';
   tv.setAttribute('aria-label','Reproduzir vídeo na televisão');tv.title='▶ Assistir ao vídeo';
   Object.assign(tv.style,{left:percent(1332,1672),top:percent(269,941),width:percent(306,1672),height:percent(253,941)});
