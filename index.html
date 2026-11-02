@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#4c2467">
   <title>Uma surpresa para Rafa</title>
   <meta name="description" content="Um quartinho de aniversário com fotos da família, vídeo e uma mensagem especial.">
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=19">
 </head>
 <body>
 <div class="page">
@@ -28,10 +28,18 @@
           <span class="gift-lid" aria-hidden="true"><span class="gift-bow"></span></span>
           <span class="gift-copy"><strong>Para a Rafa</strong><span id="giftHint">Toque para abrir</span></span>
         </button>
+        <button id="timeCapsule" type="button" class="time-capsule" aria-label="Abrir a caixa secreta de lembranças" title="Uma pequena surpresa escondida">
+          <span class="capsule-glow" aria-hidden="true"></span>
+          <span class="capsule-chest" aria-hidden="true">
+            <span class="capsule-lid"></span>
+            <span class="capsule-front"></span>
+            <span class="capsule-lock"></span>
+          </span>
+        </button>
         <div id="memoryMap" class="memory-map" aria-label="Quadros com fotografias clicáveis e televisão"></div>
       </div>
     </section>
-    <div class="caption">Explore os <strong>quadros</strong> com fotos reais, assista ao vídeo na <strong>televisão</strong> e abra o <strong>presente especial</strong>.</div>
+    <div class="caption">Explore os <strong>quadros</strong> com fotos reais, assista ao vídeo na <strong>televisão</strong> e abra o <strong>presente especial</strong>. Há também uma pequena surpresa escondida na escrivaninha.</div>
     <nav class="memory-shortcuts" id="memoryShortcuts" aria-label="Atalhos para quadros e televisão"></nav>
     <nav class="quick" aria-label="Atalho do presente"><button type="button" id="openGiftBtn">Ler a mensagem</button></nav>
     <p class="help" id="secretStatus">Uma mensagem feita com carinho para o seu aniversário.</p>
@@ -64,6 +72,42 @@
     <button id="continue" type="button" class="primary">Voltar ao quartinho</button>
   </div>
 </section>
+<section id="capsuleModal" class="backdrop capsule-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="capsuleTitle">
+  <div class="panel capsule-panel">
+    <button id="closeCapsule" type="button" class="close" aria-label="Fechar caixa de memórias">×</button>
+    <p class="capsule-kicker">CÁPSULA DO TEMPO · UMA SURPRESA ESCONDIDA</p>
+    <h2 id="capsuleTitle">Algumas lembranças merecem um lugar só delas.</h2>
+    <p class="capsule-intro">Duas cartinhas que atravessaram o tempo. Sem filtros, sem mudanças: apenas o que foi escrito e desenhado.</p>
+    <div class="memory-book" id="memoryBook" tabindex="0" aria-label="Álbum de duas cartinhas. Use as setas ou os botões para virar as páginas.">
+      <div class="book-spine" aria-hidden="true"></div>
+      <div class="book-page" id="bookPage">
+        <img id="capsulePhoto" alt="Fotografia da primeira cartinha escrita à mão" draggable="false">
+      </div>
+    </div>
+    <p class="capsule-page-indicator" id="capsulePageCount" role="status" aria-live="polite">Cartinha 1 de 2</p>
+    <div class="capsule-actions">
+      <button type="button" id="prevLetter" class="secondary">Anterior</button>
+      <button type="button" id="zoomLetter" class="secondary">Ampliar carta</button>
+      <button type="button" id="nextLetter" class="primary">Próxima carta</button>
+    </div>
+    <p class="capsule-footnote">As fotos e a letra original foram preservadas.</p>
+  </div>
+</section>
+<section id="capsuleZoom" class="backdrop capsule-zoom-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="zoomTitle">
+  <div class="capsule-zoom-panel">
+    <div class="capsule-zoom-header">
+      <h2 id="zoomTitle">Cartinha ampliada</h2>
+      <div class="capsule-zoom-actions">
+        <button id="zoomOut" type="button" class="secondary" aria-label="Diminuir zoom">−</button>
+        <button id="zoomIn" type="button" class="secondary" aria-label="Aumentar zoom">+</button>
+        <button id="closeCapsuleZoom" type="button" class="secondary">Fechar</button>
+      </div>
+    </div>
+    <div class="capsule-zoom-scroll" id="capsuleZoomScroll" tabindex="0" aria-label="Imagem da cartinha ampliada e rolável">
+      <img id="capsuleZoomPhoto" alt="Cartinha original em tamanho ampliado" draggable="false">
+    </div>
+  </div>
+</section>
 <section id="memoryModal" class="backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="memoryTitle">
   <div class="panel memory-panel">
     <button id="closeMemory" class="close" aria-label="Fechar lembrança">×</button>
@@ -78,7 +122,9 @@
 <script src="cena-familia.js?v=10" defer></script>
 <script src="fotos-familia.js?v=10" defer></script>
 <script src="video-familia.js?v=10" defer></script>
+<script src="cartinhas-originais.js?v=19" defer></script>
 <script src="game.js?v=18" defer></script>
 <script src="memorias.js?v=11" defer></script>
+<script src="capsula-do-tempo.js?v=19" defer></script>
 </body>
 </html>
