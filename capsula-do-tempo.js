@@ -77,18 +77,22 @@
 
   function setZoom(value) {
     zoom = Math.max(1, Math.min(3.5, value));
-    fullImage.style.width = Math.round(zoom * 100) + "%";
+    // Zoom baseado nos pixels reais do arquivo, não na largura da janela.
+    const naturalWidth = fullImage.naturalWidth || 1500;
+    fullImage.style.width = Math.round(naturalWidth * zoom) + "px";
+    fullImage.style.height = "auto";
     $("zoomOut").disabled = zoom <= 1;
     $("zoomIn").disabled = zoom >= 3.5;
     $("zoomTitle").textContent = "Cartinha " + (pageIndex + 1) + " ampliada";
   }
 
   function openZoom() {
-    if (modal.hidden) return;
-    fullImage.src = photos[pageIndex].src;
-    fullImage.alt = "Cartinha " + (pageIndex + 1) + " original, ampliada";
+    if (modal.hidden || flipping || !zoomModal.hidden) return;
     zoomModal.hidden = false;
-    setZoom(1.35);
+    fullImage.alt = "Cartinha " + (pageIndex + 1) + " em tamanho original";
+    fullImage.onload = () => setZoom(1);
+    fullImage.src = photos[pageIndex].src;
+    if (fullImage.complete && fullImage.naturalWidth) setZoom(1);
     $("capsuleZoomScroll").scrollTop = 0;
     $("capsuleZoomScroll").scrollLeft = 0;
     $("closeCapsuleZoom").focus();
@@ -96,6 +100,7 @@
 
   function closeZoom() {
     zoomModal.hidden = true;
+    fullImage.onload = null;
     fullImage.removeAttribute("src");
     $("zoomLetter").focus();
   }
@@ -108,6 +113,17 @@
   $("prevLetter").addEventListener("click", () => turn(-1));
   $("nextLetter").addEventListener("click", () => turn(1));
   $("zoomLetter").addEventListener("click", openZoom);
+  page.addEventListener("click", openZoom);
+  page.setAttribute("role", "button");
+  page.setAttribute("tabindex", "0");
+  page.setAttribute("aria-label", "Ampliar a cartinha exibida");
+  page.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+      openZoom();
+    }
+  });
   $("closeCapsuleZoom").addEventListener("click", closeZoom);
   zoomModal.addEventListener("click", event => {
     if (event.target === zoomModal) closeZoom();
