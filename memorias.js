@@ -19,6 +19,7 @@
   const photo = $('memoryPhoto');
   const video = $('memoryVideo');
   let active = false;
+  let videoActive = false;
   const percent = (n,total) => (100*n/total)+'%';
   const available = () => $('welcome').hidden && $('modal').hidden;
   function openMemory(index){
@@ -26,6 +27,8 @@
     active = true;
     $('memoryTitle').textContent = index === 7 ? 'Nosso vídeo de lembranças 🎬' : (titles[index] + ' 🖼️');
     if(index===7){
+      videoActive = true;
+      document.dispatchEvent(new Event("rafa:video-open"));
       photo.hidden=true; photo.removeAttribute('src');
       video.hidden=false;
       if(window.RAFAELA_VIDEO) video.src=window.RAFAELA_VIDEO;
@@ -40,7 +43,12 @@
   }
   function closeMemory(){
     if(!active)return;
-    active=false;modal.hidden=true;video.pause();video.removeAttribute('src');video.load();
+    active=false;modal.hidden=true;
+    video.pause();video.removeAttribute('src');video.load();
+    if(videoActive){
+      videoActive=false;
+      document.dispatchEvent(new Event("rafa:video-close"));
+    }
   }
   // Fotos originais: quadros fotográficos de verdade, sem rostos gerados por IA.
   // As imagens foram fornecidas pelo usuário e já estão em fotos-familia.js.
