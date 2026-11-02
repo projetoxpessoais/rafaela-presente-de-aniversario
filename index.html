@@ -3,15 +3,15 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#251d37;color:#fff4fb;font:16px monospace;min-height:100dvh;display:grid;place-items:center}main{position:relative;width:min(100vw,900px);aspect-ratio:4/3;max-height:100dvh;background:#eebad7;border:5px solid #a56da9;overflow:hidden}canvas{display:block;width:100%;height:100%;image-rendering:pixelated}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#3d285edb;padding:20px;text-align:center}.panel{border:5px solid #ffe5f1;background:#885b9a;padding:24px;max-width:500px;box-shadow:6px 6px 0 #3b2852}.panel h1{color:#fff1ac;text-shadow:3px 3px #62436f}button{font:inherit;border:3px solid #fff3fb;border-radius:5px;background:#f6aaca;color:#51335e;cursor:pointer;padding:10px 15px;font-weight:bold;touch-action:none}.hide{display:none!important}#hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:8px}#hud span{background:#563963e8;padding:8px;border:2px solid #f6bedb}#controls{position:absolute;bottom:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad{display:grid;grid-template-columns:repeat(3,43px);gap:3px;pointer-events:auto}.pad button{padding:10px 0}.pad [data-d=up]{grid-column:2}.pad [data-d=left]{grid-column:1}.pad [data-d=down]{grid-column:2}.pad [data-d=right]{grid-column:3}#action{pointer-events:auto}#skip{position:absolute;right:10px;bottom:10px}#modal{z-index:9}.letter{background:#fff4fb;color:#58385e;padding:16px;line-height:1.6;margin:12px 0;white-space:pre-wrap}#modal .panel{width:min(96%,460px)}@media(max-width:600px){main{width:100vw;height:100dvh;aspect-ratio:auto;border:0}.panel{padding:15px}#hud{font-size:12px}}
 </style></head><body><main><canvas id="scene" width="640" height="480"></canvas>
-<div id="hud" class="hide"><span id="count">🎁 0/9</span><button id="replay">↺ Rever entrada</button><button id="sound">🔇 Som</button></div>
-<div id="controls" class="hide"><div class="pad"><button data-d="up">▲</button><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div><button id="action">🎁 Abrir</button></div>
-<button id="skip" class="hide">Pular introdução »</button>
-<div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Começar surpresa</button><p>Use as setas, WASD ou os botões na tela.</p></div></div>
+<div id="hud" class="hide"><span id="count">🎁 0/9</span><span style="background:#563963e8;padding:8px;border:2px solid #f6bedb">Toque nos presentes!</span><button id="sound">🔇 Som</button></div>
+
+
+<div id="start" class="overlay"><div class="panel"><p>✦ 07 • 11 • 2026 ✦</p><h1>Uma Surpresinha para Rafaela 🎀</h1><p>18 anos, dez presentes e um quartinho encantado!</p><button id="begin">🎁 Entrar no quartinho</button><p>Toque nas caixinhas para abrir cada surpresa! ✨</p></div></div>
 <div id="modal" class="overlay hide"><div class="panel"><h2 id="heading">🎀 Presente</h2><div id="letter" class="letter"></div><button id="close">Continuar explorando ♡</button></div></div>
-</main><script src="rafaela-sprite.js?v=6"></script><script>
+</main><script src="rafaela-sprite.js?v=7"></script><script>
 (()=>{
 const canvas=document.getElementById("scene"),ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=false;
-const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[305,352],[320,205]];
+const $=s=>document.getElementById(s),gifts=[[105,160],[190,120],[370,120],[540,140],[90,280],[220,260],[415,270],[545,315],[160,385],[525,386]];
 const wishes=[
 "Que os seus 18 anos venham com descobertas felizes, momentos leves e muitas risadas! 🌸",
 "Missão especial: encontre hoje três motivos para sorrir. Este presente já conta! ✨",
@@ -117,96 +117,59 @@ function corridor(p,t){
 }
 function character(x,y,back=false,walking=false,t=0,pose=""){window.drawRafaelaSprite(ctx,x,y,back,walking,t,pose)}
 function backAvatar(x,y,t,pose="",walking=false){character(x,y,true,walking,t,pose)}
-function avatar(){character(position.x,position.y,false,moving,walkClock)}
+function avatar(){window.drawRafaelaSprite(ctx,position.x,position.y,false)}
 function unlock(){return Array.from({length:9},(_,i)=>i).every(i=>opened.has(i))}
 function tone(hz,seconds=.2){if(!sound)return;try{ac??=new AudioContext();if(ac.state==="suspended")ac.resume();const o=ac.createOscillator(),v=ac.createGain();o.type="sine";o.frequency.value=hz;v.gain.setValueAtTime(.025,ac.currentTime);v.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+seconds);o.connect(v).connect(ac.destination);o.start();o.stop(ac.currentTime+seconds)}catch{}}
 function refresh(){$("count").textContent="🎁 "+Array.from(opened).filter(i=>i<9).length+"/9";}
-function openGift(){
- if(mode!=="play"||near<0)return;
- if(near===9&&!unlock()){tone(210);return}
- giftFx={i:near,start:performance.now()};
- moving=false;keys.clear();mode="gift-opening";
- $("action").disabled=true;
- tone(493,.13);
+
+function openGift(i){
+ if(mode!=="play" || i<0)return;
+ if(i===9&&!unlock()){tone(220,.15);alert("🔒 Abra primeiro os outros nove presentes! 🎀");return}
+ giftFx={i,start:performance.now()};
+ mode="gift-opening";tone(493,.13);
 }
 function showGift(i){
- const wasOpened=opened.has(i);
- opened.add(i);save();refresh();
- giftFx=null;mode="modal";
+ opened.add(i);save();refresh();giftFx=null;mode="modal";
  $("heading").textContent=i===9?"💌 Última surpresa":"🎀 Presente "+(i+1);
- $("letter").textContent=wishes[i];
- $("modal").classList.remove("hide");
- tone(659,.22);
- if(!wasOpened)tone(784,.18);
+ $("letter").textContent=wishes[i];$("modal").classList.remove("hide");
+ tone(659,.2);
 }
-function startIntro(){mode="intro";begin=performance.now();doorClickPlayed=false;moving=false;giftFx=null;$("start").classList.add("hide");$("skip").classList.remove("hide")}
-function play(){mode="play";position={x:320,y:445};moving=false;$("skip").classList.add("hide");$("hud").classList.remove("hide");$("controls").classList.remove("hide");refresh()}
+function play(){
+ mode="play";position={x:315,y:360};
+ $("start").classList.add("hide");$("hud").classList.remove("hide");refresh();
+}
+function chooseGift(event){
+ const bounds=canvas.getBoundingClientRect();
+ const x=(event.clientX-bounds.left)*canvas.width/bounds.width;
+ const y=(event.clientY-bounds.top)*canvas.height/bounds.height;
+ let picked=-1,nearest=999;
+ gifts.forEach(([gx,gy],i)=>{
+   const dist=Math.hypot(x-gx,y-gy);
+   if(dist<55&&dist<nearest){picked=i;nearest=dist}
+ });
+ return picked;
+}
 function frame(t){
- const dt=Math.min((t-last)/1000||.016,.05);last=t;
- if(mode!=="intro"){room(t);gifts.forEach((v,i)=>gift(...v,i,t))}
- if(mode==="intro"){
-   const p=Math.max(0,(t-begin)/INTRO_MS);
-   if(p<.86){
-     corridor(p,t);
-     position.x=320;
-     if(p<.43){
-       // Caminhada com alternância de pernas, até parar diante da maçaneta.
-       position.y=432-102*(p/.43);
-       backAvatar(position.x,position.y,t,"",true);
-     }else if(p<.58){
-       position.y=330;
-       backAvatar(position.x,position.y,t,p<.49?"reach":"turn",false);
-       if(p>.49&&!doorClickPlayed){tone(440,.07);doorClickPlayed=true}
-     }else if(p<.77){
-       position.y=330;
-       backAvatar(position.x,position.y,t,"reach",false);
-     }else{
-       const q=Math.max(0,Math.min(1,(p-.77)/.09));
-       position.y=330-35*q;
-       ctx.save();ctx.beginPath();ctx.rect(283,176,75,161-37*q);ctx.clip();
-       backAvatar(position.x,position.y,t,"",true);ctx.restore();
-     }
-   }else{
-     room(t);gifts.forEach((v,i)=>gift(...v,i,t));
-     position.x=320;position.y=445;
-     const alpha=Math.max(0,Math.min(1,(1-p)/.14));
-     ctx.fillStyle="rgba(255,241,250,"+(alpha*.55)+")";
-     ctx.fillRect(0,0,640,480);
-     avatar();
-   }
-   if(p>=1)play();
- }else if(mode==="play"){
-   let dx=Number(keys.has("right"))-Number(keys.has("left"));
-   let dy=Number(keys.has("down"))-Number(keys.has("up"));
-   const len=Math.hypot(dx,dy);
-   moving=len>0;
-   if(moving){
-     walkClock+=dt*1000;
-     position.x=Math.max(30,Math.min(605,position.x+dx/len*115*dt));
-     position.y=Math.max(110,Math.min(445,position.y+dy/len*115*dt));
-   }
-   near=-1;let closest=65;
-   gifts.forEach(([x,y],i)=>{const dist=Math.hypot(x-position.x,y-position.y);if(dist<closest){closest=dist;near=i}});
-   $("action").textContent=near<0?"Explore o quarto":near===9&&!unlock()?"🔒 Trancado":opened.has(near)?"💌 Rever":"🎁 Abrir";
-   $("action").disabled=near<0||near===9&&!unlock();
- }else if(mode==="gift-opening"){
-   moving=false;
-   if(giftFx&&t-giftFx.start>1550)showGift(giftFx.i);
- }
+ room(t);gifts.forEach((v,i)=>gift(...v,i,t));
+ avatar();
+ if(mode==="gift-opening"&&giftFx&&t-giftFx.start>=1550)showGift(giftFx.i);
  if(sound&&mode!=="start"&&t>nextNote){
-   const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0],n=melody[step++%melody.length];
-   if(n)tone(n,.3);nextNote=t+490;
+  const melody=[392,440,523,440,349,392,440,0,330,392,440,392,294,330,349,0];
+  const note=melody[step++%melody.length];if(note)tone(note,.3);nextNote=t+490;
  }
- if(mode==="play"||mode==="gift-opening"||mode==="modal"){avatar()}
- word("v6 • animações",563,470,11,"#60436f");
+ word("v7 • presentes clicáveis",516,470,11,"#60436f");
  requestAnimationFrame(frame);
 }
-$("begin").onclick=()=>{sound=true;$("sound").textContent="🔊 Som";tone(523,.12);startIntro()};$("replay").onclick=()=>{keys.clear();$("controls").classList.add("hide");$("hud").classList.add("hide");startIntro()};$("skip").onclick=play;$("action").onclick=openGift;$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
+$("begin").onclick=()=>{sound=true;$("sound").textContent="🔊 Som";tone(523,.1);play()};
+$("close").onclick=()=>{$("modal").classList.add("hide");mode="play"};
 $("sound").onclick=()=>{sound=!sound;$("sound").textContent=sound?"🔊 Som":"🔇 Som";if(sound)tone(523)};
-const map={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
-document.addEventListener("keydown",e=>{const k=map[e.key];if(k){e.preventDefault();keys.add(k)}if(e.key==="e"||e.key==="Enter")openGift()});
-document.addEventListener("keyup",e=>{const k=map[e.key];if(k)keys.delete(k)});
-document.querySelectorAll("[data-d]").forEach(b=>{const dir=b.dataset.d;b.addEventListener("pointerdown",e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(dir)});["pointerup","pointercancel","lostpointercapture"].forEach(ev=>b.addEventListener(ev,()=>keys.delete(dir)))});
-window.addEventListener("blur",()=>keys.clear());requestAnimationFrame(frame);
+canvas.style.cursor="pointer";canvas.style.touchAction="manipulation";
+canvas.addEventListener("click",e=>{if(mode!=="play")return;const i=chooseGift(e);if(i>=0)openGift(i)});
+window.addEventListener("keydown",e=>{
+ if(mode!=="play")return;
+ const i=e.key==="0"?9:/^[1-9]$/.test(e.key)?Number(e.key)-1:-1;
+ if(i>=0)openGift(i);
+});
+requestAnimationFrame(frame);
 })();
 </script></body></html>
