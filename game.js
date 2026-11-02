@@ -53,6 +53,21 @@
     }
   }
 
+  // O vídeo da televisão usa seu próprio áudio: a música ambiente pausa
+  // enquanto ele está aberto e só retorna se estava ligada antes.
+  let musicWasOnBeforeVideo = false;
+  document.addEventListener("rafa:video-open", () => {
+    musicWasOnBeforeVideo = musicOn;
+    if (musicWasOnBeforeVideo) {
+      music(false);
+      if (audioCtx && audioCtx.state === "running") audioCtx.suspend();
+    }
+  });
+  document.addEventListener("rafa:video-close", () => {
+    if (musicWasOnBeforeVideo && welcome.hidden) music(true);
+    musicWasOnBeforeVideo = false;
+  });
+
   function stopWriting() {
     clearTimeout(typeTimer);
     typeTimer = null;
