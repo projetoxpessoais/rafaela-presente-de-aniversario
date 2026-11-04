@@ -660,7 +660,7 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
 #welcome.backdrop{
   background:
     linear-gradient(180deg,#03091945,#050e23b8),
-    url("fundo-hogwarts.svg") center center / cover no-repeat;
+    url("rafa-grifinoria.svg?v=1") center center / cover no-repeat;
 }
 #welcome .panel{
   background:linear-gradient(145deg,#111c36f5 0%,#2b1b3cec 58%,#491d32ef 100%);
@@ -672,3 +672,63 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
 #welcome .panel .eyebrow,#welcome .welcome-signature{color:#f0c66d!important}
 #welcome .primary{background:#87243d;color:#fff5df;border-color:#f0d18c;box-shadow:0 4px #3c1529}
 #welcome .primary:hover{background:#a52e49}
+
+
+/* Retrato Grifinória aprovado — elemento principal, sem dependência de JavaScript. */
+.hogwarts-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(255px,.8fr);
+  align-items:center;gap:clamp(14px,3vw,36px);
+  padding:clamp(11px,2vw,24px);
+  margin:0 0 24px;
+  border:5px solid #c5a35f;
+  border-radius:22px;
+  background:linear-gradient(145deg,#0a1428ee 0%,#1c233eee 48%,#491b34e9 100%);
+  box-shadow:0 0 0 4px #4e2534,0 21px 52px #030510a8,0 0 25px #dfb56f40;
+  color:#fff1d0;
+}
+.hogwarts-hero-picture{
+  position:relative;min-width:0;overflow:hidden;
+  border-radius:15px;border:3px solid #d1b270;
+  box-shadow:0 12px 34px #0008,0 0 25px #b9985838;
+}
+.hogwarts-hero-picture img{
+  display:block;width:100%;height:auto;aspect-ratio:1/1;
+  object-fit:contain;background:#0b1830;
+}
+.hogwarts-hero-message{
+  display:flex;flex-direction:column;align-items:flex-start;gap:18px;
+  padding:clamp(6px,2vw,22px);
+}
+.hogwarts-kicker{
+  font-size:.78rem;font-weight:900;letter-spacing:.18em;color:#f9cf77;
+}
+.hogwarts-hero-message h2{
+  margin:0;
+  font:700 clamp(1.6rem,3.15vw,3rem)/1.12 Georgia,"Times New Roman",serif;
+  color:#fff1ce;text-shadow:0 2px 15px #0006;
+}
+.hogwarts-hero-message p{
+  margin:0;
+  max-width:37ch;
+  font-size:clamp(.95rem,1.3vw,1.14rem);
+  line-height:1.68;color:#eadfdf;
+}
+.hogwarts-cta{
+  display:inline-block;text-decoration:none;
+  font-size:.98rem;font-weight:900;
+  line-height:1.45;text-align:center;
+  background:#87243d;color:#fff5dd;
+  border:3px solid #edc879;border-radius:11px;
+  box-shadow:0 5px #3e1425;
+  padding:13px 19px;
+}
+.hogwarts-cta:hover,.hogwarts-cta:focus-visible{background:#aa3150;color:white}
+.hogwarts-cta:focus-visible{outline:3px solid white;outline-offset:4px}
+#memorias{scroll-margin-top:18px}
+@media (max-width:760px){
+  .hogwarts-hero{grid-template-columns:1fr;gap:6px;padding:11px;border-width:3px;border-radius:16px}
+  .hogwarts-hero-message{gap:10px;padding:15px 9px 18px}
+  .hogwarts-hero-message h2{font-size:clamp(1.7rem,8vw,2.5rem)}
+  .hogwarts-cta{width:100%}
+}
