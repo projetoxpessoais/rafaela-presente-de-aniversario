@@ -1,7 +1,7 @@
 
 :root{font-family:"Trebuchet MS",Verdana,sans-serif;color:#fff4ff;background:#2e2048;font-synthesis:none}
 *{box-sizing:border-box}
-body{margin:0;min-height:100svh;background:radial-gradient(circle at 50% 4%,#7b469a 0%,#422b68 45%,#261a41 100%);}
+body{margin:0;min-height:100svh;background-color:#060d1f;background-image:linear-gradient(180deg,rgba(5,9,24,.08),rgba(2,7,17,.28)),url("fundo-hogwarts.svg");background-size:cover,cover;background-position:center center,center center;background-repeat:no-repeat,no-repeat;background-attachment:fixed,fixed;}
 button{font:inherit;cursor:pointer;touch-action:manipulation}
 button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outline-offset:5px}
 .page{width:min(1240px,98vw);margin:0 auto;padding:14px 12px 34px}
