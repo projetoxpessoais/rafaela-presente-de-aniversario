@@ -645,3 +645,30 @@ button:focus-visible,[role=button]:focus-visible{outline:4px solid #fff3ad;outli
   color:#976287;
   letter-spacing:.025em;
 }
+
+
+/* Tema Hogwarts visível na abertura e no cenário.
+   O WebP original continua intacto, fotos e áreas clicáveis preservadas. */
+.hogwarts-overlay{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  z-index:1;pointer-events:none;user-select:none;
+}
+.scene-container{
+  border-color:#c9a562;
+  box-shadow:0 0 0 4px #5d253f,0 18px 52px #030915,0 0 33px #d1ab6940;
+}
+#welcome.backdrop{
+  background:
+    linear-gradient(180deg,#03091945,#050e23b8),
+    url("fundo-hogwarts.svg") center center / cover no-repeat;
+}
+#welcome .panel{
+  background:linear-gradient(145deg,#111c36f5 0%,#2b1b3cec 58%,#491d32ef 100%);
+  border-color:#d6ac60;
+  box-shadow:0 0 0 5px #4a1d34,0 20px 58px #0009,0 0 25px #cda85e60;
+  color:#f6e8d2;
+}
+#welcome .panel h1{color:#ffedc4;text-shadow:0 2px 12px #b785415e}
+#welcome .panel .eyebrow,#welcome .welcome-signature{color:#f0c66d!important}
+#welcome .primary{background:#87243d;color:#fff5df;border-color:#f0d18c;box-shadow:0 4px #3c1529}
+#welcome .primary:hover{background:#a52e49}
