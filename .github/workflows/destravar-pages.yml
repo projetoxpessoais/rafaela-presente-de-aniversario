@@ -1,4 +1,4 @@
-name: Verificar estado da publicacao GitHub Pages
+name: Atualizar publicacao do GitHub Pages
 
 on:
   push:
@@ -9,21 +9,26 @@ on:
 permissions:
   contents: read
   pages: write
-  deployments: read
 
 jobs:
-  diagnostico:
+  atualizar:
     runs-on: ubuntu-latest
     steps:
-      - name: Verificar bloqueio da publicacao
+      - name: Reaplicar fonte main e gerar publicacao
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          set +e
-          echo "CONFIGURACAO DO GITHUB PAGES:"
-          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${REPO}/pages" | jq '{status,build_type,source,html_url}'
-          echo "PUBLICACAO TRAVADA:"
-          curl -sSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -w "\nHTTP: %{http_code}\n" "https://api.github.com/repos/${REPO}/pages/deployments/9327e79fad4e046fc6c460e9d4ab67f934f886a0"
-          echo "REGISTROS DE DEPLOY:"
-          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${REPO}/deployments?per_page=10" | jq '[.[]|{id,sha,environment,created_at}]'
+          set -euo pipefail
+          echo "Reaplicando configuracao main / do GitHub Pages..."
+          curl --fail-with-body -sSL --request PUT \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            -d '{"build_type":"legacy","source":{"branch":"main","path":"/"}}' \
+            "https://api.github.com/repos/${REPO}/pages" | jq '{status,build_type,source}'
+          echo "Solicitando nova compilacao..."
+          curl --fail-with-body -sSL --request POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/pages/builds" | jq '{status,error,message}'
