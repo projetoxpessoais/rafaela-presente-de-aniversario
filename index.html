@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#4c2467">
   <title>Uma surpresa para Rafa</title>
   <meta name="description" content="Um quartinho de aniversário com fotos da família, vídeo e uma mensagem especial.">
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="styles.css?v=24">
 </head>
 <body>
 <div class="page">
@@ -19,7 +19,18 @@
     </div>
   </header>
   <main>
-    <section class="scene-container" aria-label="Quartinho de aniversário da Rafa, com quadros da família, televisão e uma mensagem especial">
+    <section class="hogwarts-hero" aria-label="Rafa na Grifinória em Hogwarts">
+      <div class="hogwarts-hero-picture">
+        <img src="rafa-grifinoria.svg?v=1" width="1000" height="1000" alt="Rafa, com cabelo castanho e óculos, usando uniforme vermelho e dourado da Grifinória, sentada diante de um castelo mágico iluminado à noite" decoding="async" fetchpriority="high">
+      </div>
+      <div class="hogwarts-hero-message">
+        <span class="hogwarts-kicker">✦ UMA NOITE DE MAGIA ✦</span>
+        <h2>Bem-vinda a Hogwarts, Rafa!</h2>
+        <p>Uma nova fase começa aos 18 anos. E as melhores magias desta história são as memórias, os sorrisos e o carinho de quem está aqui com você.</p>
+        <a class="hogwarts-cta" href="#memorias">Explorar fotos, vídeo e surpresas ✨</a>
+      </div>
+    </section>
+    <section id="memorias" class="scene-container" aria-label="Quartinho de aniversário da Rafa, com quadros da família, televisão e uma mensagem especial">
       <div class="scene" id="scene">
         <img class="room" src="quarto-voxel.svg?v=1" alt="Quartinho rosa e lilás, estilo Minecraft, com Rafa sentada de tênis rosa e branco e fotografias da família" draggable="false">
         <button type="button" id="singleGift" class="single-gift" aria-label="Abrir o presente especial" title="Abrir a cartinha para a Rafa">
@@ -123,7 +134,7 @@
 <script src="cartinhas-originais.js?v=19" defer></script>
 <script src="game.js?v=24" defer></script>
 <script src="memorias.js?v=24" defer></script>
-<script src="tema-hogwarts.js?v=1" defer></script>
+
 <script src="capsula-do-tempo.js?v=20" defer></script>
 </body>
 </html>
