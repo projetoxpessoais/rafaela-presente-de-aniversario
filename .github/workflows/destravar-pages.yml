@@ -1,0 +1,26 @@
+name: Destravar publicacao antiga do GitHub Pages
+
+on:
+  push:
+    paths:
+      - ".github/workflows/destravar-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  destravar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancelar publicacao antiga travada
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          curl --fail-with-body --silent --show-error --location --request POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/pages/deployments/9327e79fad4e046fc6c460e9d4ab67f934f886a0/cancel"
